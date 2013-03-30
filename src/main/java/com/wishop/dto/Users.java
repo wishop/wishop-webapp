@@ -4,16 +4,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class UserDetails {
+public class Users {
 	@Id
-	private int userId;
+	private int id;
 	private String username;
 	
-	public int getUserId() {
-		return userId;
+	public int getId() {
+		return id;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setId(int userId) {
+		this.id = userId;
 	}
 	public String getUsername() {
 		return username;

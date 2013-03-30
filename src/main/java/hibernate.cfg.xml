@@ -25,7 +25,7 @@
 	<!-- Drop and re-create the database schema on startup -->
 	<property name="hbm2ddl.auto">create</property>
 
-	<mapping class="com.wishop.dto.UserDetails"/>
+	<mapping class="com.wishop.dto.Users"/>
 
     </session-factory>
 

@@ -3,7 +3,7 @@ package com.wishop.hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.wishop.dto.UserDetails;
+import com.wishop.dto.Users;
 import com.wishop.utils.HibernateUtil;
 
 public class HibernateTest {
@@ -12,15 +12,15 @@ public class HibernateTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		UserDetails user = new UserDetails();
-		user.setUserId(1);
-		user.setUsername("First User");
+		Users users = new Users();
+		users.setId(1);
+		users.setUsername("FirstUser");
 		
 		try { 
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			session.save(user);
+			session.save(users);
 			session.getTransaction().commit();
 		} catch(Exception e) { 
 			//TODO rollback transaction
