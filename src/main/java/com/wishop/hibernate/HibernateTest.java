@@ -1,14 +1,12 @@
 package com.wishop.hibernate;
 
-import java.util.Date;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.wishop.dto.Address;
-import com.wishop.dto.Sku;
-import com.wishop.dto.UserDetails;
-import com.wishop.dto.Wishlist;
+import com.wishop.model.Address;
+import com.wishop.model.Sku;
+import com.wishop.model.UserDetails;
+import com.wishop.model.Wishlist;
 import com.wishop.utils.HibernateUtil;
 
 public class HibernateTest {
@@ -20,39 +18,35 @@ public class HibernateTest {
 		UserDetails user2 = new UserDetails();
 		
 		user1.setEmail("firstuser@hotmail.com");
-		user1.setJoinedDate(new Date());
+		user1.setPassword("testing");
 		
 		user2.setEmail("adminuser@gmail.com");
-		user2.setJoinedDate(new Date());
+		user2.setPassword("testing");
 		
 		//make an address for each user. The address is an embeddable object
 		Address addr1 = new Address();
 		addr1.setCountry("GB");
 		addr1.setCity("London");
-		addr1.setStreet("10 Downing Street");
+		addr1.setAddressLine1("10 Downing Street");
 		addr1.setPostcode("w1");
 		
 		Address addr2 = new Address();
 		addr2.setCountry("GB");
 		addr2.setCity("London");
-		addr2.setStreet("11 Downing Street");
+		addr2.setAddressLine1("11 Downing Street");
 		addr2.setPostcode("w1");
 		
 		//create multiple wishlists for each user ( user can have many wishlists)
 		Wishlist wishlist1 = new Wishlist();
-		wishlist1.setDateCreated(new Date());
 		wishlist1.setDescription("FirstUser's birthday wishlist");
 		
 		Wishlist wishlist2 = new Wishlist();
-		wishlist2.setDateCreated(new Date());
 		wishlist2.setDescription("SecondUser's birthday wishlist");
 		
 		Wishlist wishlist3 = new Wishlist();
-		wishlist3.setDateCreated(new Date());
 		wishlist3.setDescription("FirstUser's anniversary wishlist");
 		
 		Wishlist wishlist4 = new Wishlist();
-		wishlist4.setDateCreated(new Date());
 		wishlist4.setDescription("SecondUser's anniversary wishlist");
 		
 		//each wishlist can have many Skus
