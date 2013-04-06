@@ -29,7 +29,6 @@ public class User extends BaseObject<User, Long> {
 	@Column(nullable=false)
 	private String password;
 	private String firstName;
-	private String middleName;
 	private String lastName;
 	private String telephone;
 	private String mobile;
@@ -93,58 +92,40 @@ public class User extends BaseObject<User, Long> {
 	}
 	
 	/**
-	 * @param firstName the CmsUser first name to set
+	 * @param firstName the User first name to set
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 	
 	/**
-	 * @return the CmsUser first name
+	 * @return the User first name
 	 */
 	public String getFirstName() {
 		return firstName;
 	}
 	
 	/**
-	 * @param middleName the CmsUser middle name to set
-	 */
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-	
-	/**
-	 * @return the CmsUser middle name
-	 */
-	public String getMiddleName() {
-		return middleName;
-	}
-	
-	/**
-	 * @param lastName the CmsUser last name to set
+	 * @param lastName the User last name to set
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 	
 	/**
-	 * @return the CmsUser last name
+	 * @return the User last name
 	 */
 	public String getLastName() {
 		return lastName;
 	}
 	
 	/**
-	 * @return the CmsUser full name
+	 * @return the User full name
 	 */
 	public String getFullName() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.getFirstName());
 		sb.append(" ");
-		if(this.getMiddleName() != null && this.getMiddleName().trim().length() > 0) {
-			sb.append(this.getMiddleName());
-			sb.append(" ");
-		}
 		sb.append(this.getLastName());
 		return sb.toString();
 	}
