@@ -19,7 +19,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="users")
-public class UserDetails extends BaseObject<UserDetails, Long> {
+public class User extends BaseObject<User, Long> {
 	
 	private static final long serialVersionUID = 911350799009583349L;
 	
