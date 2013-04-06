@@ -15,7 +15,7 @@
 		<property name="show_sql">true</property> <!-- Echo all executed SQL to stdout -->
 		<property name="hbm2ddl.auto">create</property> <!-- Drop and re-create the database schema on startup -->
 		
-		<mapping class="com.wishop.model.UserDetails"/>
+		<mapping class="com.wishop.model.User"/>
 		<mapping class="com.wishop.model.Wishlist"/>
 		<mapping class="com.wishop.model.Sku"/>
 	</session-factory>
