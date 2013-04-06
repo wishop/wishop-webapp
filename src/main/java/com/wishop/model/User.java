@@ -28,6 +28,7 @@ public class User extends BaseObject<User, Long> {
 	
 	@Column(nullable=false)
 	private String password;
+	private String title;
 	private String firstName;
 	private String lastName;
 	private String telephone;
@@ -281,4 +282,19 @@ public class User extends BaseObject<User, Long> {
 		this.address = address;
 	}
 	
+	/**
+	 * Method that retrieves the User title
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+	
+	/**
+	 * Method that sets the user Title
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }
