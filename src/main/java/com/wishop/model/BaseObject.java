@@ -14,6 +14,7 @@ import org.hibernate.annotations.Type;
 
 
 /**
+ * Base Wishop object
  * @author Paulo Monteiro
  */
 @MappedSuperclass
@@ -110,5 +111,5 @@ public abstract class BaseObject<T, ID extends Serializable> implements IAuditab
 
 	public void setAuditInfo(AuditInfo<ID> auditInfo) {
 		this.auditInfo = auditInfo;
-	}
+	}	
 }

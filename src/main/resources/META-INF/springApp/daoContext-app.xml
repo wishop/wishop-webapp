@@ -12,6 +12,8 @@
 		   http://www.springframework.org/schema/jee/spring-jee.xsd"
 		   default-lazy-init="false">
 
+	<!-- These are the DAO Beans (Spring) -->
+
 	<!-- Hibernate Session Factory -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="configLocation" value="classpath:META-INF/springApp/hibernate.cfg.xml" />
