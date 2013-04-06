@@ -2,7 +2,9 @@ package com.wishop.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
@@ -11,6 +13,27 @@ import com.wishop.dao.exceptions.HibernateSessionException;
 @Repository
 public interface BaseDAO<T, ID extends Serializable> {
 
+	final static String ID = "id";
+	final static String DELETED = "deleted";
+	
+	/**
+	 * Returns the current Hibernate Session
+	 * @return 
+	 */
+	public Session getSession();
+	    
+	/**
+	 * Returns a new Hibernate Session
+	 * @return
+	 */
+	public Session getNewSession();
+	
+	/**
+	 * An object with a Hibernate session
+	 * @param entity
+	 */
+	public void reassociate(Object entity);
+	
 	/**
      * Loads the Serializable Object by id
      * 
@@ -36,7 +59,7 @@ public interface BaseDAO<T, ID extends Serializable> {
 	public T getById(String id);
 	
 	/**
-     * Get all objects where property <b>deleted</b> is <code>true</code>
+     * Get all objects where property <b>deleted</b> is <code>false</code>
      * The method’s return value will be cached.
      * 
      * @return list of objects
@@ -58,6 +81,28 @@ public interface BaseDAO<T, ID extends Serializable> {
      * @return list of objects
      */
 	public List<T> getAll(Long id);
+	
+	/**
+	 * Get all objects where <code>deleted</code> is <b>true</b>, between the firstResult and N maxResults.
+	 * Useful for pagination.
+	 * @param firstResult
+	 * @param maxResults
+	 * @param deleted <code>true</code> or <code>false</code>
+	 * @return List of concrete BaseObjects
+	 * @throws HibernateSessionException
+	 */
+	public List<T> getAll(int firstResult, int maxResults);
+	
+	/**
+	 * Get all objects based on the property deleted between the firstResult and N maxResults.
+	 * Useful for pagination.
+	 * @param firstResult
+	 * @param maxResults
+	 * @param deleted <code>true</code> or <code>false</code>
+	 * @return List of concrete BaseObjects
+	 * @throws HibernateSessionException
+	 */
+	public List<T> getAll(int firstResult, int maxResults, boolean deleted);
 	
 	/**
 	 * @param entity - Object 
@@ -107,5 +152,36 @@ public interface BaseDAO<T, ID extends Serializable> {
 	/**
      * Returns the SessionFactory that was injected by the Spring Framework  
      */
-	public SessionFactory getSessionFactory();	
+	public SessionFactory getSessionFactory();
+	
+	
+	/**
+	 * Logs all the actions related to an object, with the default Locale.
+	 * @param code
+	 * @param entity
+	 */
+	public void logAction(String code, T entity);	
+	
+	/**
+	 * Logs all the actions related to an object, with the default Locale.
+	 * @param code
+	 * @param entity
+	 */
+	public void logAction(String code, ID id);
+	
+	/**
+	 * Logs all the actions related to an object, depending on the Locale
+	 * @param code
+	 * @param entity
+	 * @param locale
+	 */
+	public void logAction(String code, T entity, Locale locale);
+	
+	/**
+	 * Logs all the actions related to an object, depending on the Locale
+	 * @param code
+	 * @param entity
+	 * @param locale
+	 */
+	public void logAction(String code, ID id, Locale locale);
 }
