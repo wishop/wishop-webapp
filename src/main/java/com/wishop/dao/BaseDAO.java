@@ -83,7 +83,7 @@ public interface BaseDAO<T, ID extends Serializable> {
 	public List<T> getAll(Long id);
 	
 	/**
-	 * Get all objects where <code>deleted</code> is <b>true</b>, between the firstResult and N maxResults.
+	 * Get all objects where <code>deleted</code> is <b>false</b>, between the firstResult and N maxResults.
 	 * Useful for pagination.
 	 * @param firstResult
 	 * @param maxResults

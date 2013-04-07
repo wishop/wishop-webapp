@@ -22,7 +22,9 @@
 		<hibernate.version>4.1.10.Final</hibernate.version>
 		<spring.version>3.1.1.RELEASE</spring.version>
     	<postgresql.version>9.1-901.jdbc4</postgresql.version>
-    	    <aspectj.version>1.6.11</aspectj.version>
+    	<ehcache.version>2.5.1</ehcache.version>
+    	<ehcache.terracota.version>2.1.1</ehcache.terracota.version>
+    	<aspectj.version>1.6.11</aspectj.version>
     	
     	<!-- Maven properties -->
     	<version.compiler.plugin>2.3.1</version.compiler.plugin>
@@ -143,6 +145,24 @@
 					<artifactId>jms</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		 <!-- 	EHCache - Wishop 2nd level cache 
+				For documentation: http://www.ehcache.org/documentation/user-guide/hibernate -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-terracotta</artifactId>
+			<version>${ehcache.terracota.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.6.4</version>
 		</dependency>
 	</dependencies>
 	

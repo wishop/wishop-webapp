@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <!-- EHCache - ICI 2nd level cache 
+    For documentation: http://www.ehcache.org/documentation/user-guide/hibernate -->
+ 
+ <ehcache>
+ 	<!-- Default cache settings -->
+ 	<defaultCache
+ 		maxElementsInMemory="500"
+ 		eternal="true"
+ 		overflowToDisk="false"
+ 		memoryStoreEvictionPolicy="LFU" />
+ 	
+ 	<!-- Wishop User model cache  -->
+ 	<cache name="userCache"
+ 		maxElementsInMemory="1000"
+ 		eternal="true"
+ 		timeToLiveSeconds="0"
+ 		overflowToDisk="false"
+ 		memoryStoreEvictionPolicy="LFU" />
+ 		
+ </ehcache>

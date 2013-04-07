@@ -13,7 +13,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 
 	/**
 	 * BaseObjectService service that gets a BaseObject by Id.
-	 * Uses @Cacheable to declares that the method’s return value should be cached
+	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
+	 * EH Cache models involved: <b>userCache</b>
 	 * @param id Serializable
 	 * @return T BaseObject
 	 */
@@ -21,7 +22,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that gets a BaseObject by Id.
-	 * Uses @Cacheable to declares that the method’s return value should be cached
+	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
+	 * EH Cache models involved: <b>userCache</b>
 	 * @param id Integer
 	 * @return T BaseObject
 	 */
@@ -29,7 +31,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that gets a BaseObject by ID
-	 * Uses @Cacheable to declares that the method’s return value should be cached
+	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
+	 * EH Cache models involved: <b>userCache</b>
 	 * @param id String
 	 * @return T BaseObject
 	 */
@@ -37,7 +40,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that gets all BaseObject.<br>
-	 * Uses @Cacheable to declares that the method’s return value should be cached
+	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
+	 * EH Cache models involved: <b>userCache</b>
 	 * @param id Integer
 	 */
 	public List<T> getAll();
@@ -45,27 +49,54 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	/**
 	 * BaseObjectService service that gets all BaseObject by the <b><code>deleted</code></b> flag.<br>
 	 * Uses @Cacheable to declares that the method’s return value should be cached
+	 * EH Cache models involved: <b>userCache</b>
 	 * @param deleted boolean
 	 */
 	public List<T> getAll(boolean deleted);
 	
 	/**
 	 * BaseObjectService service that gets all BaseObject, except the <b>objectId</b>.<br>
-	 * Uses @Cacheable to declares that the method’s return value should be cached
+	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
+	 * EH Cache models involved: <b>userCache</b>
 	 * @param id Long
 	 */
 	public List<T> getAll(Long id);
 	
 	/**
+	 * Get all objects where <code>deleted</code> is <b>false</b>, between the firstResult and N maxResults.
+	 * Useful for pagination.
+	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
+	 * EH Cache models involved: <b>userCache</b>
+	 * @param firstResult
+	 * @param maxResults
+	 * @return List of BaseObjects
+	 */
+	public List<T> getAll(int firstResult, int maxResults);
+	
+	/**
+	 * Get all objects based on the property deleted between the firstResult and N maxResults.
+	 * Useful for pagination.
+	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
+	 * EH Cache models involved: <b>userCache</b>
+	 * @param firstResult
+	 * @param maxResults
+	 * @param deleted
+	 * @return List of BaseObjects
+	 */
+	public List<T> getAll(int firstResult, int maxResults, boolean deleted);
+	
+	/**
 	 * BaseObjectService service that saves or updates a BaseObject. <br>
-	 * Makes use of @CacheFlush to specify a flush action when the method is called.
+	 * Makes use of @CachePut to add a new value to the cache model.
+	 * EH Cache models involved: <b>userCache</b>
 	 * @param entity BaseObject
 	 */
 	public void saveOrUpdate(T entity);
 	
 	/**
 	 * BaseObjectService service that saves or updates a BaseObject.<br>
-	 * Makes use of @CacheFlush to specify a flush action when the method is called.
+	 * Makes use of @CachePut to add a new value to the cache model. <br>
+	 * EH Cache models involved: <b>userCache</b>
 	 * @param entity BaseObject
 	 * @throws ScribeException 
 	 */
@@ -73,7 +104,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that update a BaseObject.<br>
-	 * Makes use of @CacheFlush to specify a flush action when the method is called. 
+	 * Makes use of @CachePut to add a new value to the cache model. <br>
+	 * EH Cache models involved: <b>userCache</b> 
 	 * @param entity BaseObject
 	 * @throws ScribeException 
 	 */
@@ -81,7 +113,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that update a BaseObject.<br>
-	 * Makes use of @CacheFlush to specify a flush action when the method is called.
+	 * Makes use of @CacheEvict to specify a flush action when the method is called. <br>
+	 * EH Cache models involved: <b>userCache</b> 
 	 * @param entity BaseObject
 	 * @throws ScribeException 
 	 */
@@ -89,7 +122,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that update a BaseObject.<br>
-	 * Makes use of @CacheFlush to specify a flush action when the method is called.
+	 * Makes use of @CacheEvict to specify a flush action when the method is called.<br> 
+	 * EH Cache models involved: <b>userCache</b> 
 	 * @param entity - BaseObject
 	 * @param deleted - the desired deleted state of the <b>BaseObject</b> in the database
 	 * @return result - the number of affected rows in the database

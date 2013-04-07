@@ -5,9 +5,11 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:cache="http://www.springframework.org/schema/cache"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-		http://www.springframework.org/schema/mvc	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+		http://www.springframework.org/schema/mvc	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
 	<context:component-scan base-package="com.wishop.model"/>
 	<context:component-scan base-package="com.wishop.dao"/>
@@ -16,11 +18,11 @@
 	
     <!-- Spring Application Context provider-->
 	<bean id="applicationContextProvider" class="com.wishop.utils.WishopApplicationContext" />
+
 	
+	<!-- ############################## Internationalisation and Site Properties  ############################# -->
 	<!-- Wishop Messages -->
 	<bean id="wishopMessages" class="com.wishop.utils.WishopMessages" factory-method="getInstance" lazy-init="false" />
-
-	<!-- Internationalisation and Site Properties  -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     	<property name="basenames">
     		<list>
@@ -37,6 +39,13 @@
 	<mvc:interceptors>  
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="locale" />
 	</mvc:interceptors>
-	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" /> 
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+	
+	
+	<!-- ########################################## Spring EH Cache ########################################## --> 
+	<!-- EHCache - Wishop's 2nd level cache-->
+	<cache:annotation-driven cache-manager="cacheManager"/>
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache"/>
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="classpath:cache/ehcache.xml"/>
 
 </beans>
