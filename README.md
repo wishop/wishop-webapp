@@ -2,19 +2,7 @@ wishop-webapp
 =============
 
 ## Features included
-_This brief document tries to give a simple but effective explanation of how the technologies interact with the Spring framework_
-
-### Hibernate
- * The wishop object-relational mapping (ORM) framework. Maps an object-oriented domain model to a DB table
- * **daoContext-app.xml**: All the relevant Spring beans to setup the DAO layer
- * **hibernate-cfg.xml**: Has all the hibernate properties in order to connect to the DB 
-
-
-### Spring
- * The wishop application framework and inversion of control container, responsible for injecting and wiring up the beans.
- * **applicationContext-app.xml**: Contains all the relevant application beans, including model, service, dao, audit, internationalization, cache, aspects, etc
- * **WishopApplicationContext**: Provides an access to the Spring Framework context. With it we can access the beans.
-
+_This brief document tries to give a simple but effective explanation of how the technologies interact within the wishop application_
 
 ### Maven
  * The wishop build automation tool
@@ -22,6 +10,17 @@ _This brief document tries to give a simple but effective explanation of how the
  * **target/**: folder where Maven stores all output of the build.
  * **/home/vagrant/.m2**: local folder where maven stores all the dependencies  
  * **Commands**: On the CLI, go to the wishop-webapp folder and type: `mvn clean install`. It will perform jUnit tests if any is created.
+
+### Hibernate
+ * The wishop object-relational mapping (ORM) framework. Maps an object-oriented domain model to a DB table
+ * **daoContext-app.xml**: All the relevant Spring beans to setup the DAO layer
+ * **hibernate-cfg.xml**: Has all the hibernate properties in order to connect to the DB 
+
+
+### Spring Core
+ * The wishop application framework and inversion of control container, responsible for injecting and wiring up the beans.
+ * **applicationContext-app.xml**: Contains all the relevant application beans, including model, service, dao, audit, internationalization, cache, aspects, etc
+ * **WishopApplicationContext**: Provides an access to the Spring Framework context. With it we can access the beans.
 
 
 ### Internationalization
@@ -43,7 +42,7 @@ _This brief document tries to give a simple but effective explanation of how the
  
  
 ### AspectsJ (AOP)
- * AspectJ is an aspect-oriented extension. Allowing wishop to manage mundane tasks, that should be done but the programmer should need to repeat it throught the code.
+ * AspectJ is an aspect-oriented extension. Allowing wishop to manage mundane tasks, that should be done but the programmer should not need to repeat it throughout the code.
  * **AuditLog.java**: Class responsible for using the AspectsJ. It simply adds the AuditInfo (creation timestamp, creation user id, modification timestamp, modification user id) to all BaseObject classes and creates new entry on the AuditLogRecord. This will provide information about the who/when information against a business object.  
 
 ##Still missing
@@ -51,5 +50,7 @@ _This brief document tries to give a simple but effective explanation of how the
 ### jUnit
 
 ### Spring MVC
+
+### Spring Social
 
 ### JSTL 
