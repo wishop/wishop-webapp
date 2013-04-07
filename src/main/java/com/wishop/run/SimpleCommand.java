@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import com.wishop.dao.exceptions.HibernateSessionException;
 import com.wishop.model.Address;
@@ -19,6 +20,7 @@ public class SimpleCommand {
 
 	private UserService userService;
 	private Logger logger = Logger.getLogger(SimpleCommand.class);
+	private Md5PasswordEncoder passwordEncoder =  new Md5PasswordEncoder();
 	
 	public void run() {
 		try{
@@ -44,6 +46,9 @@ public class SimpleCommand {
 		   logger.info("Email: " + user.getEmail());
 		   logger.info("Name: " + user.getFullName());
 		   logger.info("DoB: " + user.getDateOfBirth());
+		   if(user.getAuditInfo() != null) {
+			   logger.info("Creation Timestamp: " + user.getAuditInfo().getCreationTimestamp());
+		   }
 		   if(user.getAddress() != null) {
 			   logger.info("Address: " + user.getAddress().getFullAddress());
 		   }
@@ -60,7 +65,7 @@ public class SimpleCommand {
 		Date date = formatter.parse("24/01/2013");
 		user1.setDateOfBirth(date);
 		user1.setEmail("test.user2@mailinator.com");
-		user1.setPassword("password");
+		user1.setPassword(passwordEncoder.encodePassword("password", user1.getEmail()));
 		user1.setMobile("1231231231");
 		user1.setProfile("Hello World");
 		Address address1 = new Address();
