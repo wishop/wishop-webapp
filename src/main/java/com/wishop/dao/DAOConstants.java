@@ -18,4 +18,5 @@ public interface DAOConstants {
 	public static final String DAO_ERROR_DELETING_OBJECT = "DAO_ERROR_DELETING_OBJECT";
 	public static final String DAO_ERROR_PURGING_OBJECT = "DAO_ERROR_PURGING_OBJECT";
 	public static final String DAO_WARNING_PURGING_OBJECT_FOREIGN_KEY = "DAO_WARNING_PURGING_OBJECT_FOREIGN_KEY";
+	
 }

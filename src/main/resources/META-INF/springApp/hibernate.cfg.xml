@@ -28,6 +28,7 @@
 		
 		 <!-- List all the mapping documents we're using -->
 		<mapping class="com.wishop.model.User"/>
+		<mapping class="com.wishop.model.AuditLogRecord"/>
 		<mapping class="com.wishop.model.Wishlist"/>
 		<mapping class="com.wishop.model.Sku"/>
 	</session-factory>
