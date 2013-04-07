@@ -78,6 +78,7 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 		query.setParameter("id", user.getId());
 		query.setParameter("isAccountActive", isAccountActive);
 		query.executeUpdate();
+		this.refresh(user);
 	}
 
 	@Override
