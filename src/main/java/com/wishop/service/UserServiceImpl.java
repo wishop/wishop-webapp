@@ -25,19 +25,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements U
 		super(userDAO);
 	}
 	
-	/**
-	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.AuditLog} aspect.
-	 * Makes use of @CacheFlush to specify a flush action when the method is called.
-	 * @param entity User
-	 * @throws ScribeException 
-	 */
 	@Transactional(readOnly=false)
-	public void save(User user) throws WishopException {
+	public void save(User user) {
 		super.save(user);
 	}
 	
 	@Transactional(readOnly=false)
-	public void update(User user) throws WishopException {
+	public void update(User user) {
 		super.update(user);
 	}
 

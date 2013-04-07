@@ -77,7 +77,7 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements 
 
 	@CachePut("userCache")
 	@Transactional(readOnly=false)
-	public void save(T entity) throws WishopException {
+	public void save(T entity) {
 		this.dao.save(entity);
 		logAction(SERVICE_ACTION_SAVE, entity);
 	}
@@ -91,7 +91,7 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements 
 
 	@CachePut("userCache")
 	@Transactional(readOnly=false)
-	public void update(T entity) throws WishopException {
+	public void update(T entity) {
 		this.getDao().update(entity);
 		logAction(SERVICE_ACTION_UPDATE, entity);
 	}

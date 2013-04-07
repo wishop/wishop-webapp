@@ -100,9 +100,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	 * Makes use of @CachePut to add a new value to the cache model. <br>
 	 * EH Cache models involved: <b>userCache</b>
 	 * @param entity BaseObject
-	 * @throws ScribeException 
 	 */
-	public void save(T entity) throws WishopException;
+	public void save(T entity);
 	
 	/**
 	 * BaseObjectService service that update a BaseObject.<br>
@@ -110,9 +109,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	 * Makes use of @CachePut to add a new value to the cache model. <br>
 	 * EH Cache models involved: <b>userCache</b> 
 	 * @param entity BaseObject
-	 * @throws ScribeException 
 	 */
-	public void update(T entity) throws WishopException;
+	public void update(T entity);
 	
 	/**
 	 * BaseObjectService service that update a BaseObject.<br>

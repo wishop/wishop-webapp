@@ -58,7 +58,7 @@ public class SimpleCommand {
 		user1.setEmail("paulo.from.portugal@gmail.com");
 		user1.setPassword("password");
 		user1.setMobile("07590541213");
-		userService.saveOrUpdate(user1);
+		userService.save(user1);
 		
 		User user2 = new User();
 		user2.setFirstName("Hoang");
@@ -68,6 +68,6 @@ public class SimpleCommand {
 		user2.setEmail("hoang.from.australia@gmail.com");
 		user2.setPassword("password");
 		user2.setMobile("1231231321323");
-		userService.saveOrUpdate(user2);
+		userService.save(user2);
 	}
 }
