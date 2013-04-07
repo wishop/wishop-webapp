@@ -9,6 +9,7 @@ import com.wishop.model.User;
 import com.wishop.model.Wishlist;
 import com.wishop.utils.HibernateUtil;
 
+@Deprecated
 public class HibernateTest {
 
 	public static void main(String[] args) {
