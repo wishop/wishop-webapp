@@ -26,16 +26,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements U
 	}
 	
 	@Transactional(readOnly=false)
-	public void save(User user) {
-		super.save(user);
-	}
-	
-	@Transactional(readOnly=false)
-	public void update(User user) {
-		super.update(user);
-	}
-
-	@Transactional(readOnly=false)
 	public void purge(User user) throws WishopException {
 		super.purge(user);
 	}

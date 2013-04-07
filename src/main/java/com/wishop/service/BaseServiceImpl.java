@@ -78,7 +78,7 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements 
 	@CachePut("userCache")
 	@Transactional(readOnly=false)
 	public void save(T entity) {
-		this.dao.save(entity);
+		this.getDao().save(entity);
 		logAction(SERVICE_ACTION_SAVE, entity);
 	}
 	
