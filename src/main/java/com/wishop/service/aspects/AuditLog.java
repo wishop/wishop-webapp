@@ -325,7 +325,7 @@ public class AuditLog implements AuditLogConstants {
 	
 	/**
 	 * Users Java Reflection to inspect the returning types of the BaseObject methods and create the AuditInfo object. <br>
-	 * <b>Example:</b> A BaseObject has a CmsAddress and a CmsImage which need to have the AuditInfo created as well. <br>
+	 * <b>Example:</b> A BaseObject might be part of another BaseObjects which need to have the AuditInfo created as well. <br>
 	 * @param baseObject
 	 * @param user - authenticated User
 	 * @param now - Date
@@ -404,7 +404,7 @@ public class AuditLog implements AuditLogConstants {
 	}
 
 	/**
-	 * Logs the action performed against the CMS database, by calling the .
+	 * Logs the action performed against the Wishop database, by calling the AuditLogRecordService.
 	 * @param baseObject
 	 * @param auditLogRecord
 	 * @param now

@@ -26,7 +26,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements U
 	}
 	
 	/**
-	 * This method is used to provide a pointcut for the {@link com.UserServiceImpl.cms.security.aspect.UserService} aspect.
+	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.AuditLog} aspect.
 	 * Makes use of @CacheFlush to specify a flush action when the method is called.
 	 * @param entity User
 	 * @throws ScribeException 

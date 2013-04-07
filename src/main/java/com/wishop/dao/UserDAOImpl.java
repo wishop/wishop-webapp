@@ -49,13 +49,6 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 		return getById(new Long(id.intValue()));
 	}
 	
-	public User getByCmsAddress(Long cmsAddressId) {
-		String hql = "from User o where o.cmsAddress.id = :cmsAddressId";
-		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
-		query.setLong("cmsAddressId", cmsAddressId);
-		return (User) query.uniqueResult();
-	}
-
 	public User getByEmail(String email) {
 		String hql = "from User o where o.email = :email";
 		Query query = getSessionFactory().getCurrentSession().createQuery(hql);

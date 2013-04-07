@@ -22,7 +22,7 @@ public interface AuditLogRecordService<ID extends Serializable> {
 	 * Method responsible for persisting the AuditLogRecord.
 	 * BaseService service that saves or updates an BaseObject
 	 * It calls the correct DAO instance, injected previously by the Spring Framework 
-	 * @param entity CmsObject
+	 * @param entity BaseObject
 	 * @param entity
 	 */
 	public void save(AuditLogRecord<ID> entity);

@@ -74,9 +74,9 @@ public abstract class BaseObject<T, ID extends Serializable> implements IAuditab
         if(obj == null) return false;
         if(this == obj) return true;
         if( !(obj instanceof BaseObject) ) return false;
-        BaseObject<T,ID> cmsGenericObject = (BaseObject<T,ID>) obj;
-        if(this.getId() == null || cmsGenericObject.getId() == null) return false;
-        return this.getId().equals(cmsGenericObject.getId());
+        BaseObject<T,ID> genericObject = (BaseObject<T,ID>) obj;
+        if(this.getId() == null || genericObject.getId() == null) return false;
+        return this.getId().equals(genericObject.getId());
     }
 	
 	/**

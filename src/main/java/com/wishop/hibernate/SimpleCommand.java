@@ -17,13 +17,11 @@ import com.wishop.utils.WishopApplicationContext;
 public class SimpleCommand {
 
 	private UserService userService;
-	//private RoleService cmsRoleService;
 	private Logger logger = Logger.getLogger(SimpleCommand.class);
 	
 	public void run() {
 		try{
 			userService = (UserService) WishopApplicationContext.getBean("userService");
-			//cmsRoleService = (RoleService) WishopApplicationContext.getBean("cmsRoleService");
 			populateDatabase();
 			displayDatabase();
 			//with cache
