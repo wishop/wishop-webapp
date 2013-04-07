@@ -5,7 +5,7 @@ import org.hibernate.cfg.ImprovedNamingStrategy;
 /**
  * <p>
  * This class provides a feature that enforces naming standards automatically.
- * All table names should follow the pattern <table_name>
+ * All table/columns names should follow the pattern <table_name> by looking at the Java camelCase naming
  * </p>
  * 
  * @author pmonteiro
