@@ -6,7 +6,7 @@
 
     <groupId>com.wishop</groupId>
     <artifactId>wishop-webapp</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <packaging>war</packaging>
 
     <name>Wishop</name>
@@ -83,6 +83,11 @@
 		</dependency>
 		
 		<!-- TDD & jUnit dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

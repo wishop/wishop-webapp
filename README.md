@@ -52,9 +52,13 @@ _This brief document tries to give a simple but effective explanation of how the
  * **AuditLog.java**: Class responsible for using the AspectsJ. It simply adds the AuditInfo (creation timestamp, creation user id, modification timestamp, modification user id) to all BaseObject classes and creates new entry on the AuditLogRecord. This will provide information about the who/when information against a business object.  
 
 
-##Still missing
+### jUnit (TDD)
+ * The wishop Test Driven Development (TDD) framework
+ * **src/test/java**: Package where all the tests should be placed.
+ * **Maven integration**: on the CLI, go to the folder and run `mvn clean test`
 
-### jUnit
+
+##Still missing
 
 ### Spring MVC
 
