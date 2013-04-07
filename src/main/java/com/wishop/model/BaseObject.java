@@ -18,7 +18,7 @@ import org.hibernate.annotations.Type;
  * @author Paulo Monteiro
  */
 @MappedSuperclass
-public abstract class BaseObject<T, ID extends Serializable> implements IAuditable<ID>, Serializable, Comparable<T>, Cloneable
+public abstract class BaseObject<T, ID extends Serializable> implements Auditable<ID>, Serializable, Comparable<T>, Cloneable
 {
 	private static final long serialVersionUID = -1687484459562393898L;
 	

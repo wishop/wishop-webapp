@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.wishop.model.AuditInfo;
 import com.wishop.model.AuditLogRecord;
 import com.wishop.model.BaseObject;
-import com.wishop.model.IAuditable;
+import com.wishop.model.Auditable;
 import com.wishop.model.User;
 import com.wishop.model.exceptions.WishopException;
 import com.wishop.service.AuditLogConstants;
@@ -68,7 +68,7 @@ public class AuditLog implements AuditLogConstants {
 	 */
 	@Around("execution(* com.wishop.service.BaseService.save(..))")
 	public void logSave(ProceedingJoinPoint jp) {
-		BaseObject<IAuditable<Long>, Long> baseObject = null;
+		BaseObject<Auditable<Long>, Long> baseObject = null;
 		AuditLogRecord<Long> auditLogRecord = new AuditLogRecord<Long>();
 		Date now = Calendar.getInstance().getTime();
 		
@@ -111,7 +111,7 @@ public class AuditLog implements AuditLogConstants {
 	 */
 	@Around("execution(* com.wishop.service.BaseService.update(..))")
 	public void logUpdate(ProceedingJoinPoint jp) {
-		BaseObject<IAuditable<Long>, Long> baseObject = null;
+		BaseObject<Auditable<Long>, Long> baseObject = null;
 		AuditLogRecord<Long> auditLogRecord = new AuditLogRecord<Long>();
 		Date now = Calendar.getInstance().getTime();
 		User user = WishopSecurityContext.getSessionUser();
@@ -154,7 +154,7 @@ public class AuditLog implements AuditLogConstants {
 	 */
 	@Around("execution(* com.wishop.service.BaseService.saveOrUpdate(..))")
 	public void logSaveOrUpdate(ProceedingJoinPoint jp) {
-		BaseObject<IAuditable<Long>, Long> baseObject = null;
+		BaseObject<Auditable<Long>, Long> baseObject = null;
 		AuditLogRecord<Long> auditLogRecord = new AuditLogRecord<Long>();
 		Date now = Calendar.getInstance().getTime();
 		User user = WishopSecurityContext.getSessionUser();
@@ -197,7 +197,7 @@ public class AuditLog implements AuditLogConstants {
 	 */
 	@Around("execution(* com.wishop.service.BaseService.delete(..))")
 	public void logDelete(ProceedingJoinPoint jp) {
-		BaseObject<IAuditable<Long>, Long> baseObject = null;
+		BaseObject<Auditable<Long>, Long> baseObject = null;
 		AuditLogRecord<Long> auditLogRecord = new AuditLogRecord<Long>();
 		Date now = Calendar.getInstance().getTime();
 		User user = WishopSecurityContext.getSessionUser();
@@ -248,7 +248,7 @@ public class AuditLog implements AuditLogConstants {
 	@SuppressWarnings("unchecked")
 	@Around("execution(* com.wishop.service.BaseService.purge(..))")
 	public void logPurge(ProceedingJoinPoint jp) throws WishopException {
-		BaseObject<IAuditable<Long>, Long> baseObject = null;
+		BaseObject<Auditable<Long>, Long> baseObject = null;
 		AuditLogRecord<Long> auditLogRecord = new AuditLogRecord<Long>();
 		Date now = Calendar.getInstance().getTime();
 		User user = WishopSecurityContext.getSessionUser();
@@ -259,7 +259,7 @@ public class AuditLog implements AuditLogConstants {
 				throw new HibernateException(WishopMessages.getMessage(AUDIT_NO_OBJECT_TO_SAVE, (String) jp.getSignature().toShortString()));
 			}
 			// get BaseObject
-			baseObject =  (BaseObject<IAuditable<Long>, Long>) list.get(0);
+			baseObject =  (BaseObject<Auditable<Long>, Long>) list.get(0);
 			
 			//proceed with the proxied method
 			jp.proceed();
@@ -291,12 +291,12 @@ public class AuditLog implements AuditLogConstants {
 	 * @throws SecurityException 
 	 */
 	@SuppressWarnings("unchecked")
-	private BaseObject<IAuditable<Long>, Long> updateAuditInfo(ProceedingJoinPoint jp, List<Object> list, 
-			BaseObject<IAuditable<Long>, Long> baseObject, User user, Date now) throws IllegalArgumentException, 
+	private BaseObject<Auditable<Long>, Long> updateAuditInfo(ProceedingJoinPoint jp, List<Object> list, 
+			BaseObject<Auditable<Long>, Long> baseObject, User user, Date now) throws IllegalArgumentException, 
 			IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException {
 		AuditInfo<Long> auditInfo = null;
 		
-		baseObject =  (BaseObject<IAuditable<Long>, Long>) list.get(0);
+		baseObject =  (BaseObject<Auditable<Long>, Long>) list.get(0);
 		
 		auditInfo = baseObject.getAuditInfo();
 		
@@ -334,7 +334,7 @@ public class AuditLog implements AuditLogConstants {
 	 * @throws InvocationTargetException
 	 */
 	@SuppressWarnings("unchecked")
-	private void auditInnerObjects(BaseObject<IAuditable<Long>, Long> baseObject, User user, Date now)
+	private void auditInnerObjects(BaseObject<Auditable<Long>, Long> baseObject, User user, Date now)
 			throws NoSuchMethodException, IllegalAccessException,
 			InvocationTargetException {
 		Method[] methods = baseObject.getClass().getMethods();
@@ -344,7 +344,7 @@ public class AuditLog implements AuditLogConstants {
 				privateStringMethod.setAccessible(true);
 				Object returnedObject = (Object)privateStringMethod.invoke(baseObject, null);
 				if(returnedObject != null && returnedObject instanceof BaseObject) {
-					BaseObject<IAuditable<Long>, Long> returnedBaseObject = (BaseObject<IAuditable<Long>, Long>) returnedObject;
+					BaseObject<Auditable<Long>, Long> returnedBaseObject = (BaseObject<Auditable<Long>, Long>) returnedObject;
 					if(returnedBaseObject.isNew()) {
 						returnedBaseObject.getAuditInfo().setCreationTimestamp(now);
 						returnedBaseObject.getAuditInfo().setCreatorUserId(user.getId());
@@ -369,11 +369,11 @@ public class AuditLog implements AuditLogConstants {
 	 * @return BaseObject
 	 */
 	@SuppressWarnings("unchecked")
-	private BaseObject<IAuditable<Long>, Long> updateAuditInfoOnDelete(ProceedingJoinPoint jp, List<Object> list, 
-			BaseObject<IAuditable<Long>, Long> baseObject, User user, Date now) {
+	private BaseObject<Auditable<Long>, Long> updateAuditInfoOnDelete(ProceedingJoinPoint jp, List<Object> list, 
+			BaseObject<Auditable<Long>, Long> baseObject, User user, Date now) {
 		AuditInfo<Long> auditInfo = null;
 		
-		baseObject =  (BaseObject<IAuditable<Long>, Long>) list.get(0);
+		baseObject =  (BaseObject<Auditable<Long>, Long>) list.get(0);
 		
 		auditInfo = baseObject.getAuditInfo();
 		auditInfo.setModificationTimestamp(now);
@@ -396,7 +396,7 @@ public class AuditLog implements AuditLogConstants {
 	 * @param user
 	 * @param action - constant to get the message from a <b>.properties</b> file
 	 */
-	private void logAction(BaseObject<IAuditable<Long>, Long> baseObject,
+	private void logAction(BaseObject<Auditable<Long>, Long> baseObject,
 		AuditLogRecord<Long> auditLogRecord, Date now, User user, String action) {
 		String message = WishopMessages.getMessage(action, baseObject, user);
 		auditLogger.info(message);
@@ -411,7 +411,7 @@ public class AuditLog implements AuditLogConstants {
 	 * @param user
 	 * @param message
 	 */
-	private void saveAuditLogRecord(BaseObject<IAuditable<Long>, Long> baseObject, 
+	private void saveAuditLogRecord(BaseObject<Auditable<Long>, Long> baseObject, 
 			AuditLogRecord<Long> auditLogRecord, Date now, User user, String message) {
 		auditLogRecord.setCreated(now);
 		auditLogRecord.setEntityId(baseObject.getId());

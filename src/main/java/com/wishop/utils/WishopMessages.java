@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import com.wishop.model.BaseObject;
-import com.wishop.model.IAuditable;
+import com.wishop.model.Auditable;
 import com.wishop.model.User;
 
 /**
@@ -15,15 +15,15 @@ import com.wishop.model.User;
  * @param <T>	Base Object
  * @param <ID>	Object Id
  */
-public class WishopMessages<T extends IAuditable<ID>, ID extends Serializable> {
+public class WishopMessages<T extends Auditable<ID>, ID extends Serializable> {
 
-	private static WishopMessages<? extends IAuditable<? extends Serializable>, ? extends Serializable> wishopMessages;
+	private static WishopMessages<? extends Auditable<? extends Serializable>, ? extends Serializable> wishopMessages;
 	
 	
 	private WishopMessages() {}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static WishopMessages<? extends IAuditable<? extends Serializable>, ? extends Serializable> getInstance() {
+	public static WishopMessages<? extends Auditable<? extends Serializable>, ? extends Serializable> getInstance() {
 		if (wishopMessages == null) {
 			wishopMessages = new WishopMessages();
 		}
