@@ -65,10 +65,6 @@ public class WishopMessages<T extends IAuditable<ID>, ID extends Serializable> {
 			BaseObject<Object, ? extends Serializable> baseObject = (BaseObject<Object, ? extends Serializable>) entity;
 			argList.add(baseObject.getClass().getName());
 			argList.add(baseObject.getId());
-		} else if (entity instanceof String) {
-			argList.add((String) entity);
-		} else if (entity instanceof Number) {
-			argList.add((Number) entity);
 		}
 		return WishopApplicationContext.getApplicationContext().getMessage(code, argList.toArray(), locale);
 	}
