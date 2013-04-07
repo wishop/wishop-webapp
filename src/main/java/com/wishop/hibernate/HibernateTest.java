@@ -9,6 +9,13 @@ import com.wishop.model.User;
 import com.wishop.model.Wishlist;
 import com.wishop.utils.HibernateUtil;
 
+/**
+ * This class has been deprecated, as Wishop already has Spring and Hibernate working together.
+ * Use WishopMain instead
+ * @author pmonteiro
+ *
+ */
+@Deprecated
 public class HibernateTest {
 
 	public static void main(String[] args) {
