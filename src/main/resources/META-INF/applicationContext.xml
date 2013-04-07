@@ -20,6 +20,7 @@
 	
     <!-- Spring Application Context provider-->
 	<bean id="applicationContextProvider" class="com.wishop.utils.WishopApplicationContext" />
+	<bean id="passwordEncoder"  class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
 
 	
 	<!-- ############################## Internationalisation and Site Properties  ############################# -->
