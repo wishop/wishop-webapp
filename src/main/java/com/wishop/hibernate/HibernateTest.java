@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 
 import com.wishop.model.Address;
 import com.wishop.model.Sku;
-import com.wishop.model.UserDetails;
+import com.wishop.model.User;
 import com.wishop.model.Wishlist;
 import com.wishop.utils.HibernateUtil;
 
@@ -14,8 +14,8 @@ public class HibernateTest {
 	public static void main(String[] args) {
 		
 		//create two users
-		UserDetails user1 = new UserDetails();
-		UserDetails user2 = new UserDetails();
+		User user1 = new User();
+		User user2 = new User();
 		
 		user1.setEmail("firstuser@hotmail.com");
 		user1.setPassword("testing");
@@ -95,7 +95,7 @@ public class HibernateTest {
 	public static void testObjectRetrieval(Session session) { 
 		session.beginTransaction();
 		//retrieve user with id of 1
-		UserDetails user = (UserDetails)session.get(UserDetails.class, 1);
+		User user = (User)session.get(User.class, 1);
 		System.out.print(">>> Username retrieved: " + user.getEmail());
 	}
 }

@@ -1,6 +1,7 @@
 package com.wishop.service;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.stereotype.Service;
 
@@ -105,4 +106,34 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	 * Returns the BaseObjectDAO concrete class, that was injected by the Spring Framework
 	 */
 	public X getDao();
+	
+	/**
+	 * Logs all the actions related to an object, with the default Locale.
+	 * @param code
+	 * @param entity
+	 */
+	public void logAction(String action, T entity);
+	
+	/**
+	 * Logs all the actions related to an object, with the default Locale.
+	 * @param code
+	 * @param id
+	 */
+	public void logAction(String action, Long id);
+	
+	/**
+	 * Logs all the actions related to an object, depending on the Locale
+	 * @param code
+	 * @param entity
+	 * @param locale
+	 */
+	public void logAction(String code, T entity, Locale locale);	
+	
+	/**
+	 * Logs all the actions related to an object, depending on the Locale
+	 * @param code
+	 * @param id
+	 * @param locale
+	 */
+	public void logAction(String code, Long id, Locale locale);
 }

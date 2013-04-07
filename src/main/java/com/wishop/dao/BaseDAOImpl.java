@@ -26,7 +26,7 @@ import com.wishop.utils.WishopMessages;
  * @author Paulo Monteiro
  */
 @Repository
-public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID>, IDaoInternationalization {
+public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID>, DAOConstants {
 
     private Class<T> persistentClass;
     private SessionFactory sessionFactory;
@@ -71,7 +71,7 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
     	try {
             return (T) getSession().get(getPersistentClass(), id);
         } catch (HibernateException e) {
-			throw new HibernateSessionException("Error fetching user by Id", e.getCause());
+			throw new HibernateSessionException(WishopMessages.getMessage(DAO_COULD_NOT_FETCH), e.getCause());
         }
     }
 
@@ -117,9 +117,10 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
     		BaseObject<T,ID> object = (BaseObject<T, ID>) getById(((BaseObject<T,ID>)entity).getId());
     		getSession().delete(object);
     	}
+    	logAction(DAO_ACTION_PURGE, entity);
     }
     
-    @SuppressWarnings({ "rawtypes" })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void delete(T entity, boolean deleted) {
     	if(entity instanceof BaseObject) {
     		if(((BaseObject)entity).getAuditInfo().getCreationTimestamp() != null) {
@@ -134,6 +135,12 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
     	    	query.setParameter("tsp", ((BaseObject)entity).getAuditInfo().getModificationTimestamp());
     	    	query.setParameter("userId", ((BaseObject)entity).getAuditInfo().getModifierUserId());
     	    	int result = query.executeUpdate();
+    	    	if(result > 0) {
+    	    		logAction(DAO_ACTION_DELETE, ((BaseObject<T,ID>)entity).getId());
+    	    	} else {
+    	    		logAction(DAO_ERROR_DELETING_OBJECT, ((BaseObject<T,ID>)entity).getId());
+    	    		throw new HibernateException(WishopMessages.getMessage(DAO_ERROR_DELETING_OBJECT,((BaseObject)entity).getId()));
+    	    	}
     		}
     	} else {
     		throw new HibernateException("Error deleting object");
@@ -143,11 +150,13 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
     public T save(T entity) throws HibernateException
     {
         getSession().save(entity);
+        logAction(DAO_ACTION_SAVE, entity);
         return entity;
     }
 
     public T saveOrUpdate(T entity) {
     	getSession().saveOrUpdate(entity);
+    	logAction(DAO_ACTION_SAVE_OR_UPDATE, entity);
         return entity;
     }
     
@@ -155,8 +164,10 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
     {
     	try{
     		getSession().update(entity);
+    		logAction(DAO_ACTION_UPDATE, entity);
     	}catch (NonUniqueObjectException e) {
-    		getSession().merge(entity);	
+    		getSession().merge(entity);
+    		logAction(DAO_ACTION_MERGE, entity);
     	}
         return entity;
     }
@@ -164,6 +175,7 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
     public T refresh(T entity) throws HibernateException
     {
         getSession().refresh(entity);
+        logAction(DAO_ACTION_REFRESH, entity);
         return entity;
     }
     
@@ -183,7 +195,6 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 
 	public void logAction(String code, T entity, Locale locale)
     {
-    	WishopMessages.getInstance();
 		logger.debug(WishopMessages.getMessage(code, entity, locale));
     }
 	
@@ -195,7 +206,6 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 
 	public void logAction(String code, ID id, Locale locale)
     {
-    	WishopMessages.getInstance();
 		logger.debug(WishopMessages.getMessage(code, id, locale));
     }
 }

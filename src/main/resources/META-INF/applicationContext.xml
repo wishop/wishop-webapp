@@ -2,15 +2,12 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+		http://www.springframework.org/schema/mvc	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
 	<context:component-scan base-package="com.wishop.model"/>
 	<context:component-scan base-package="com.wishop.dao"/>
@@ -19,5 +16,27 @@
 	
     <!-- Spring Application Context provider-->
 	<bean id="applicationContextProvider" class="com.wishop.utils.WishopApplicationContext" />
+	
+	<!-- Wishop Messages -->
+	<bean id="wishopMessages" class="com.wishop.utils.WishopMessages" factory-method="getInstance" lazy-init="false" />
+
+	<!-- Internationalisation and Site Properties  -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    	<property name="basenames">
+    		<list>
+	    		<value>internationalization/audit/dao_messages</value>
+	    		<value>internationalization/audit/service_messages</value>
+    		</list>
+    	</property>
+    </bean>
+
+    <!--The LocaleChangeInterceptor is configured to look for the parameter name 'locale' to indicate 
+    	a change of the user's locale, and is registered as an interceptor using the Spring MVC Namespace.
+    	Adding 'locale=pt' to a URL will change the locale to Portuguese. 
+    	The SessionLocaleResolver keeps the user's currently configured locale in session scope. -->
+	<mvc:interceptors>  
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="locale" />
+	</mvc:interceptors>
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" /> 
 
 </beans>

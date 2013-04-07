@@ -36,7 +36,7 @@ public class WishopMessages<T extends IAuditable<ID>, ID extends Serializable> {
 	 * @param entity - entity that is being audited
 	 * @return message - string message
 	 */
-	public String getMessage(String code) {
+	public static String getMessage(String code) {
 		return getMessage(code, new Object(), Locale.getDefault());
 	}
 	
