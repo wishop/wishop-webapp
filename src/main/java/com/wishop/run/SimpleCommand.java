@@ -10,6 +10,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 
 import com.wishop.dao.exceptions.HibernateSessionException;
+import com.wishop.model.Address;
 import com.wishop.model.User;
 import com.wishop.service.UserService;
 import com.wishop.utils.WishopApplicationContext;
@@ -43,7 +44,9 @@ public class SimpleCommand {
 		   logger.info("Email: " + user.getEmail());
 		   logger.info("Name: " + user.getFullName());
 		   logger.info("DoB: " + user.getDateOfBirth());
-		   logger.info("Address Details:");
+		   if(user.getAddress() != null) {
+			   logger.info("Address: " + user.getAddress().getFullAddress());
+		   }
 		}
 	}
 
@@ -51,23 +54,22 @@ public class SimpleCommand {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
 
 		User user1 = new User();
-		user1.setFirstName("Paulo");
-		user1.setLastName("Monteiro");
-		Date date = formatter.parse("24/05/1982");
+		user1.setTitle("Mr");
+		user1.setFirstName("Test");
+		user1.setLastName("User 2");
+		Date date = formatter.parse("24/01/2013");
 		user1.setDateOfBirth(date);
-		user1.setEmail("paulo.from.portugal@gmail.com");
+		user1.setEmail("test.user2@mailinator.com");
 		user1.setPassword("password");
-		user1.setMobile("07590541213");
+		user1.setMobile("1231231231");
+		user1.setProfile("Hello World");
+		Address address1 = new Address();
+		address1.setAddressLine1("Test Address 2");
+		address1.setCity("London");
+		address1.setCounty("London");
+		address1.setCountry("UK");
+		address1.setPostcode("SE1");
+		user1.setAddress(address1);
 		userService.save(user1);
-		
-		User user2 = new User();
-		user2.setFirstName("Hoang");
-		user2.setLastName("Tran");
-		date = formatter.parse("24/06/1984");
-		user2.setDateOfBirth(date);
-		user2.setEmail("hoang.from.australia@gmail.com");
-		user2.setPassword("password");
-		user2.setMobile("1231231321323");
-		userService.save(user2);
 	}
 }

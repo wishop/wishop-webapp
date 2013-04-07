@@ -11,10 +11,16 @@ _This brief document tries to give a simple but effective explanation of how the
  * **/home/vagrant/.m2**: local folder where maven stores all the dependencies  
  * **Commands**: On the CLI, go to the wishop-webapp folder and type: `mvn clean install`. It will perform jUnit tests if any is created.
 
+
+### PostgreSQL
+ * The wishop DB. _The world's most advanced open source database in the world_
+ * **import.sql**: This file will provide a clean way of maintaining the DB in sync by loading seed data into the database using SQL statements
+
+
 ### Hibernate
  * The wishop object-relational mapping (ORM) framework. Maps an object-oriented domain model to a DB table
  * **daoContext-app.xml**: All the relevant Spring beans to setup the DAO layer
- * **hibernate-cfg.xml**: Has all the hibernate properties in order to connect to the DB 
+ * **hibernate-cfg.xml**: Has all the hibernate properties for the DB connection 
 
 
 ### Spring Core
@@ -44,6 +50,7 @@ _This brief document tries to give a simple but effective explanation of how the
 ### AspectsJ (AOP)
  * AspectJ is an aspect-oriented extension. Allowing wishop to manage mundane tasks, that should be done but the programmer should not need to repeat it throughout the code.
  * **AuditLog.java**: Class responsible for using the AspectsJ. It simply adds the AuditInfo (creation timestamp, creation user id, modification timestamp, modification user id) to all BaseObject classes and creates new entry on the AuditLogRecord. This will provide information about the who/when information against a business object.  
+
 
 ##Still missing
 
