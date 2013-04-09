@@ -25,9 +25,12 @@ public class SimpleCommand {
 	public void run() {
 		try{
 			userService = (UserService) WishopApplicationContext.getBean("userService");
-			populateDatabase();
+			User user = populateDatabase();
 			displayDatabase();
 			logger.info("NOW WITH CACHE! (no call to the DB is made) ");
+			displayDatabase();
+			userService.purge(user);
+			logger.info("CACHE HAS BEEN FLUSHED! (a new DAO call is made) ");
 			displayDatabase();
 		} catch (HibernateSessionException e) {
 			logger.error("Error", e);
@@ -55,7 +58,7 @@ public class SimpleCommand {
 		}
 	}
 
-	private void populateDatabase() throws NoSuchAlgorithmException, ParseException {
+	private User populateDatabase() throws NoSuchAlgorithmException, ParseException {
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
 
 		User user1 = new User();
@@ -76,5 +79,6 @@ public class SimpleCommand {
 		address1.setPostcode("SE1");
 		user1.setAddress(address1);
 		userService.save(user1);
+		return user1;
 	}
 }
