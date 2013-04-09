@@ -12,13 +12,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wishop.dao.BaseDAO;
-import com.wishop.model.exceptions.WishopException;
 import com.wishop.utils.WishopMessages;
 
 @Service
-@Transactional(propagation=Propagation.REQUIRED, readOnly=true)
-public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements BaseService<X, T>, ServiceConstants
-{
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements	BaseService<X, T>, ServiceConstants {
 
 	private Logger logger = Logger.getLogger(BaseServiceImpl.class);
 	private X dao;
@@ -26,7 +24,7 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements 
 	public BaseServiceImpl(X dao) {
 		this.setDao(dao);
 	}
-	
+
 	public X getDao() {
 		return this.dao;
 	}
@@ -34,12 +32,12 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements 
 	public void setDao(X dao) {
 		this.dao = dao;
 	}
-	
+
 	@Cacheable("userCache")
 	public List<T> getAll() {
 		return getDao().getAll();
 	}
-	
+
 	@Cacheable("userCache")
 	public List<T> getAll(Long id) {
 		return getDao().getAll(id);
@@ -49,15 +47,15 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements 
 	public List<T> getAll(boolean deleted) {
 		return getDao().getAll(deleted);
 	}
-	
+
 	@Cacheable("userCache")
 	public List<T> getAll(int firstResult, int maxResults) {
-		return this.getAll(firstResult, maxResults, false);
+		return this.getAll(firstResult-1, maxResults, false);
 	}
 
 	@Cacheable("userCache")
 	public List<T> getAll(int firstResult, int maxResults, boolean deleted) {
-		return getDao().getAll(firstResult, maxResults, deleted);
+		return getDao().getAll(firstResult-1, maxResults, deleted);
 	}
 
 	@Cacheable("userCache")
@@ -75,60 +73,56 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements 
 		return getDao().getById(id);
 	}
 
-	@CachePut("userCache")
-	@Transactional(readOnly=false)
+	@CacheEvict(value = "userCache", allEntries = true)
+	@Transactional(readOnly = false)
 	public void save(T entity) {
 		this.getDao().save(entity);
 		logAction(SERVICE_ACTION_SAVE, entity);
 	}
-	
-	@CachePut("userCache") 
-	@Transactional(readOnly=false)
+
+	@CachePut("userCache")
+	@CacheEvict(value = "userCache", allEntries = true)
 	public void saveOrUpdate(T entity) {
 		this.getDao().saveOrUpdate(entity);
 		logAction(SERVICE_ACTION_SAVE_OR_UPDATE, entity);
 	}
 
 	@CachePut("userCache")
-	@Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	public void update(T entity) {
 		this.getDao().update(entity);
 		logAction(SERVICE_ACTION_UPDATE, entity);
 	}
-	
-	@Transactional(readOnly=false)
-	@CacheEvict(value = "userCache" , allEntries=true)
+
+	@Transactional(readOnly = false)
+	@CacheEvict(value = "userCache", allEntries = true)
 	public void delete(T entity, boolean deleted) {
 		this.getDao().delete(entity, deleted);
 		logAction(SERVICE_ACTION_DELETE, entity);
 	}
-	
-	@Transactional(readOnly=false)
-	@CacheEvict(value = "userCache" , allEntries=true)
-	public void purge(T entity) throws WishopException {
+
+	@Transactional(readOnly = false)
+	@CacheEvict(value = "userCache", allEntries = true)
+	public void purge(T entity) {
 		this.getDao().purge(entity);
 		logAction(SERVICE_ACTION_PURGE, entity);
 	}
-	
-	public void logAction(String code, T entity)
-    {
+
+	public void logAction(String code, T entity) {
 		Locale defaultLocale = Locale.getDefault();
 		logAction(code, entity, defaultLocale);
-    }
-	
-	public void logAction(String code, Long id)
-    {
+	}
+
+	public void logAction(String code, Long id) {
 		Locale defaultLocale = Locale.getDefault();
 		logAction(code, id, defaultLocale);
-    }
-	
-	public void logAction(String code, T entity, Locale locale)
-    {
+	}
+
+	public void logAction(String code, T entity, Locale locale) {
 		logger.info(WishopMessages.getMessage(code, entity, locale));
-    }
-	
-	public void logAction(String code, Long id, Locale locale)
-    {
+	}
+
+	public void logAction(String code, Long id, Locale locale) {
 		logger.info(WishopMessages.getMessage(code, id, locale));
-    }
+	}
 }

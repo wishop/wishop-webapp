@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wishop.dao.UserDAO;
 import com.wishop.model.User;
-import com.wishop.model.exceptions.WishopException;
 
 @Service
 @Component("userService")
@@ -25,11 +24,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements U
 	@Autowired
 	public UserServiceImpl(UserDAO userDAO) {
 		super(userDAO);
-	}
-	
-	@Transactional(readOnly=false)
-	public void purge(User user) throws WishopException {
-		super.purge(user);
 	}
 	
 	public User getByEmail(String email) {
