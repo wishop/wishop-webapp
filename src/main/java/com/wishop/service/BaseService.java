@@ -6,7 +6,6 @@ import java.util.Locale;
 import org.springframework.stereotype.Service;
 
 import com.wishop.dao.BaseDAO;
-import com.wishop.model.exceptions.WishopException;
 
 @Service
 public interface BaseService<X extends BaseDAO<T, Long>, T> {
@@ -64,7 +63,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * Get all objects where <code>deleted</code> is <b>false</b>, between the firstResult and N maxResults.
-	 * Useful for pagination.
+	 * Useful for pagination.<br>
+	 * The minimun <code>firstResult</code> value is <b>1</b>. <br>
 	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
 	 * EH Cache models involved: <b>userCache</b>
 	 * @param firstResult
@@ -75,7 +75,8 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * Get all objects based on the property deleted between the firstResult and N maxResults.
-	 * Useful for pagination.
+	 * Useful for pagination.<br>
+	 * The minimun <code>firstResult</code> value is <b>1</b>. <br>
 	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
 	 * EH Cache models involved: <b>userCache</b>
 	 * @param firstResult
@@ -120,7 +121,7 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	 * @param entity BaseObject
 	 * @throws ScribeException 
 	 */
-	public void purge(T entity) throws WishopException;
+	public void purge(T entity);
 	
 	/**
 	 * BaseObjectService service that update a BaseObject.<br>
