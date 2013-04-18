@@ -30,18 +30,15 @@ public class AuditLogRecordServiceImpl<ID extends Serializable> implements Audit
 		dao = auditLogRecordDAO;
 	}
 	
-	@Override
 	public void logAction(AuditLogRecord<ID> entity)
     {
         logger.info("Service save: " + entity.getClass().getName() +":"+entity.getId());
     }
 
-	@Override
 	public AuditLogRecordDAO<ID> getDao() {
 		return this.dao;
 	}
 
-	@Override
 	public void save(AuditLogRecord<ID> entity) {
 		getDao().save(entity);
 		logAction(entity);

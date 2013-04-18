@@ -31,7 +31,6 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 	 * @param id - unique user id
 	 * @return User
 	 */
-	@Override
 	public User getById(String id) {
 		if(!StringUtils.isEmpty(id) && StringUtils.isNumeric(id)) {
 			return getById(Long.parseLong(id));
@@ -44,7 +43,6 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 	 * @param id - unique user id
 	 * @return User
 	 */
-	@Override
 	public User getById(Integer id) {
 		return getById(new Long(id.intValue()));
 	}
@@ -81,7 +79,6 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 		this.refresh(user);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public boolean isUniqueEmail(User user) {
 		String hql = "from User o where o.email = :email";

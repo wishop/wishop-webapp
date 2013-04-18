@@ -14,7 +14,6 @@ public class WishopApplicationContext implements ApplicationContextAware {
      * This is done automatically by Spring
      * @param applicationContext 
      */
-	@Override
 	public void setApplicationContext(ApplicationContext appContext) throws BeansException {
 		applicationContext = appContext;
 	}

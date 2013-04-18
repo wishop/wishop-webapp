@@ -42,21 +42,18 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	private Md5PasswordEncoder passwordEncoder;
 
 	@Test
-	@Override
 	public void testGetById() {
 		User user = userService.getById(3);
 		testUser(user, TEST_USER_EMAIL_1);
 	}
 
 	@Test
-	@Override
 	public void testGetByEmail() {
 		User user = userService.getByEmail(TEST_USER_EMAIL_1);
 		testUser(user, TEST_USER_EMAIL_1);
 	}
 
 	@Test
-	@Override
 	public void testGetByLastName() {
 		List<User> users = userService.getByLastName("User");
 		Assert.assertNotNull(users);
@@ -65,7 +62,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testIsUniqueEmail() {
 		User user = new User();
 		user.setEmail("test.user@mailinator.com");
@@ -75,7 +71,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testSetAccountActive() {
 		User user = userService.getById(USERS_LIST_SIZE);
 		Assert.assertTrue(user.isAccountActive());
@@ -84,7 +79,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testGetUserByIdAndPassword() {
 		User user = userService.getById(USERS_LIST_SIZE);
 		User user2 = userService.getUserByIdAndPassword(user, "password");
@@ -106,7 +100,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testGetAll() {
 		List<User> users = userService.getAll();
 		Assert.assertNotNull(users);
@@ -117,7 +110,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testGetAllExceptOne() {
 		List<User> users = userService.getAll(3l);
 		Assert.assertNotNull(users);
@@ -128,7 +120,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testGetAllByDeleteBasis() {
 		boolean deletedUsers = false;
 		List<User> users = userService.getAll(deletedUsers);
@@ -143,7 +134,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testGetAllByPagination() {
 		List<User> users = userService.getAll(1,3);
 		Assert.assertNotNull(users);
@@ -154,13 +144,11 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testGetAllByPaginationAndByDeleteBasis() {
 		
 	}
 
 	@Test
-	@Override
 	public void testSave() {
 		User newUser =  createUser();
 		userService.save(newUser);
@@ -174,7 +162,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	 * The <code>testSaveOrUpdate()</code> reuses the DB data from the <code>testSave()</code> method
 	 */
 	@Test
-	@Override
 	public void testSaveOrUpdate() {
 		List<User> users = userService.getAll();
 		User newUser =  createUser();
@@ -186,7 +173,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testUpdate() {
 		User user = userService.getByEmail("test.user@mailinator.com");
 		user.setEmail("test.user3@mailinator.com");
@@ -200,7 +186,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testDelete() {
 		List<User> users = userService.getAll();
 		Assert.assertNotNull(users);
@@ -217,7 +202,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	@Override
 	public void testPurge() {
 		List<User> users = userService.getAll();
 		Assert.assertNotNull(users);

@@ -44,7 +44,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements U
 		this.getDao().setAccountActive(user, isAccountActive);
 	}
 
-	@Override
 	public boolean isUniqueEmail(User user) {
 		return this.getDao().isUniqueEmail(user);
 	}
