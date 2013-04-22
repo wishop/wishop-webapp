@@ -29,9 +29,6 @@ public abstract class BaseObject<T, ID extends Serializable> implements Auditabl
 	@TableGenerator(name="generatorName", allocationSize=1, table="wishop_keys", pkColumnName="table_name", valueColumnName="next_value") 
 	protected ID id;
 	
-	@Column(nullable=false)
-    protected boolean deleted;
-	
 	@Embedded
 	protected AuditInfo<ID> auditInfo = new AuditInfo<ID>();
 	
@@ -57,16 +54,6 @@ public abstract class BaseObject<T, ID extends Serializable> implements Auditabl
 	public boolean isNew() {
 		return (this.id == null);
 	}
-    
-    public boolean isDeleted()
-    {
-        return this.deleted;
-    }
-
-    public void setDeleted(boolean deleted)
-    {
-        this.deleted = deleted;
-    }
     
 	@Override
 	@SuppressWarnings("unchecked")

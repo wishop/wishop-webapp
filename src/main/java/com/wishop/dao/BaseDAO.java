@@ -14,7 +14,6 @@ import com.wishop.dao.exceptions.HibernateSessionException;
 public interface BaseDAO<T, ID extends Serializable> {
 
 	final static String ID = "id";
-	final static String DELETED = "deleted";
 	
 	/**
 	 * Returns the current Hibernate Session
@@ -67,14 +66,6 @@ public interface BaseDAO<T, ID extends Serializable> {
 	public List<T> getAll();
 	
 	/**
-     * Get all objects based on the property <b>deleted</b>.
-     * @param deleted <code>true</code> or <code>false</code>
-     * The method’s return value will be cached.
-     * @return list of objects
-     */
-	public List<T> getAll(boolean deleted);
-	
-	/**
      * Get all objects except the object with the parameter <b>id</b>.
      * @param id - Long object Id 
      * The method’s return value will be cached.
@@ -92,17 +83,6 @@ public interface BaseDAO<T, ID extends Serializable> {
 	 * @throws HibernateSessionException
 	 */
 	public List<T> getAll(int firstResult, int maxResults);
-	
-	/**
-	 * Get all objects based on the property deleted between the firstResult and N maxResults.
-	 * Useful for pagination.
-	 * @param firstResult
-	 * @param maxResults
-	 * @param deleted <code>true</code> or <code>false</code>
-	 * @return List of concrete BaseObjects
-	 * @throws HibernateSessionException
-	 */
-	public List<T> getAll(int firstResult, int maxResults, boolean deleted);
 	
 	/**
 	 * @param entity - Object 
@@ -135,13 +115,6 @@ public interface BaseDAO<T, ID extends Serializable> {
      * @param entity - Object
      */
 	public void purge(T entity);
-	
-	/**
-     * Tags the object on the database as deleted
-     * @param entity - Object
-     * @param deleted -the desired deleted state of the <b>Object</b> in the database
-     */
-	public void delete(T entity, boolean deleted);
 	
 	/**
 	 * Session Factory is injected by the Spring Framework

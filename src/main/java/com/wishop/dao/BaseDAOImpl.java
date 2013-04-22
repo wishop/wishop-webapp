@@ -10,7 +10,6 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.LockOptions;
 import org.hibernate.NonUniqueObjectException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -75,18 +74,11 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
         }
     }
 
+	@SuppressWarnings("unchecked")
 	public List<T> getAll() {
-   		return getAll(false);
+		return getSession().createCriteria(getPersistentClass()).list();
     }
 
-	@SuppressWarnings("unchecked")
-	public List<T> getAll(boolean deleted) {
-		Criteria query = null;
-		query = getSession().createCriteria(getPersistentClass());
-		query.add(Restrictions.eq(DELETED, deleted));
-    	return query.list();
-    }
-    
 	@SuppressWarnings("unchecked")
 	public List<T> getAll(Long id) {
 		Criteria query = null;
@@ -95,17 +87,12 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 		return query.list();
     }
 	
+	@SuppressWarnings("unchecked")
 	public List<T> getAll(int firstResult, int maxResults) {
-    	return getAll(firstResult, maxResults, false);
-	}
-    
-    @SuppressWarnings("unchecked")
-	public List<T> getAll(int firstResult, int maxResults, boolean deleted) {
     	Criteria query = null;
 		query = getSession().createCriteria(getPersistentClass());
 		query.setFirstResult(firstResult);
 		query.setMaxResults(maxResults);
-		query.add(Restrictions.eq(DELETED, deleted));
 		return query.list();
 	}
 
@@ -118,33 +105,6 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
     		getSession().delete(object);
     	}
     	logAction(DAO_ACTION_PURGE, entity);
-    }
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void delete(T entity, boolean deleted) {
-    	if(entity instanceof BaseObject) {
-    		if(((BaseObject)entity).getAuditInfo().getCreationTimestamp() != null) {
-    			((BaseObject)entity).setDeleted(deleted);
-    			getSession().update(entity);
-    		} else {
-    			String hql = "UPDATE " + getPersistentClassToString() + " o SET o.deleted = :deleted, " +
-    					"o.auditInfo.modificationTimestamp = :tsp, o.auditInfo.modifierUserId = :userId  WHERE o.id = :id";
-    	    	Query query = getSession().createQuery(hql);
-    	    	query.setParameter("id", ((BaseObject)entity).getId());
-    	    	query.setParameter("deleted", deleted);
-    	    	query.setParameter("tsp", ((BaseObject)entity).getAuditInfo().getModificationTimestamp());
-    	    	query.setParameter("userId", ((BaseObject)entity).getAuditInfo().getModifierUserId());
-    	    	int result = query.executeUpdate();
-    	    	if(result > 0) {
-    	    		logAction(DAO_ACTION_DELETE, ((BaseObject<T,ID>)entity).getId());
-    	    	} else {
-    	    		logAction(DAO_ERROR_DELETING_OBJECT, ((BaseObject<T,ID>)entity).getId());
-    	    		throw new HibernateException(WishopMessages.getMessage(DAO_ERROR_DELETING_OBJECT,((BaseObject)entity).getId()));
-    	    	}
-    		}
-    	} else {
-    		throw new HibernateException("Error deleting object");
-    	}
     }
     
     public T save(T entity) throws HibernateException

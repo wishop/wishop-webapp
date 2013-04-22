@@ -48,14 +48,6 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	public List<T> getAll();
 	
 	/**
-	 * BaseObjectService service that gets all BaseObject by the <b><code>deleted</code></b> flag.<br>
-	 * Uses @Cacheable to declares that the method’s return value should be cached
-	 * EH Cache models involved: <b>userCache</b>
-	 * @param deleted boolean
-	 */
-	public List<T> getAll(boolean deleted);
-	
-	/**
 	 * BaseObjectService service that gets all BaseObject, except the <b>objectId</b>.<br>
 	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
 	 * EH Cache models involved: <b>userCache</b>
@@ -74,19 +66,6 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	 * @return List of BaseObjects
 	 */
 	public List<T> getAll(int firstResult, int maxResults);
-	
-	/**
-	 * Get all objects based on the property deleted between the firstResult and N maxResults.
-	 * Useful for pagination.<br>
-	 * The minimun <code>firstResult</code> value is <b>1</b>. <br>
-	 * Uses @Cacheable to declares that the method’s return value should be cached. <br>
-	 * EH Cache models involved: <b>userCache</b>
-	 * @param firstResult
-	 * @param maxResults
-	 * @param deleted
-	 * @return List of BaseObjects
-	 */
-	public List<T> getAll(int firstResult, int maxResults, boolean deleted);
 	
 	/**
 	 * BaseObjectService service that saves or updates a BaseObject. <br>
@@ -124,17 +103,6 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	 * @throws ScribeException 
 	 */
 	public void purge(T entity);
-	
-	/**
-	 * BaseObjectService service that update a BaseObject.<br>
-	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.AuditLog} aspect.<br>
-	 * Makes use of @CacheEvict to specify a flush action when the method is called.<br> 
-	 * EH Cache models involved: <b>userCache</b> 
-	 * @param entity - BaseObject
-	 * @param deleted - the desired deleted state of the <b>BaseObject</b> in the database
-	 * @return result - the number of affected rows in the database
-	 */
-	public void delete(T entity, boolean deleted);
 	
 	/**
 	 * Set the BaseObjectDAO concrete class. Injected by the Spring Framework

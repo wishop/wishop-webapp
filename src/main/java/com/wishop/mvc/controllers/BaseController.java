@@ -95,31 +95,6 @@ public abstract class BaseController<T, ID extends Serializable> extends WishopF
 	}
 	
 	/**
-	 * Tags the BaseObject in the database as deleted.<br>
-	 * The object is not purged from the database. 
-	 * @param entity - ModelAttribute
-	 * @return Webpage name, to redirect the user to
-	 */
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value="/delete", method = RequestMethod.POST)
-    public String delete(@ModelAttribute T entity) {
-    	baseService.delete((BaseObject<?, Long>) entity, true);
-        return REDIRECT + WORKBENCH + entityShortName + SHOW +((BaseObject<?, Long>) entity).getId();
-    }
-	
-	/**
-	 * Tags the BaseObject in the database as not deleted.
-	 * @param entity - ModelAttribute
-	 * @return Webpage name, to redirect the user to
-	 */
-	@SuppressWarnings("unchecked")
-	@RequestMapping(value="/undelete", method = RequestMethod.POST)
-    public String undelete(@ModelAttribute T entity) {
-		baseService.delete((BaseObject<?, Long>) entity, false);
-        return REDIRECT + WORKBENCH + entityShortName + SHOW +((BaseObject<?, Long>) entity).getId();
-    }
-	
-	/**
 	 * Completely removes the object from the database. 
 	 * @param entity BaseObject
 	 * @param result

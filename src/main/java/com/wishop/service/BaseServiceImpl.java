@@ -44,18 +44,8 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements	
 	}
 
 	@Cacheable("userCache")
-	public List<T> getAll(boolean deleted) {
-		return getDao().getAll(deleted);
-	}
-
-	@Cacheable("userCache")
 	public List<T> getAll(int firstResult, int maxResults) {
-		return this.getAll(firstResult-1, maxResults, false);
-	}
-
-	@Cacheable("userCache")
-	public List<T> getAll(int firstResult, int maxResults, boolean deleted) {
-		return getDao().getAll(firstResult-1, maxResults, deleted);
+		return getDao().getAll(firstResult-1, maxResults);
 	}
 
 	@Cacheable("userCache")
@@ -92,13 +82,6 @@ public abstract class BaseServiceImpl<X extends BaseDAO<T, Long>, T> implements	
 	public void update(T entity) {
 		this.getDao().update(entity);
 		logAction(SERVICE_ACTION_UPDATE, entity);
-	}
-
-	@Transactional(readOnly = false)
-	@CacheEvict(value = "userCache", allEntries = true)
-	public void delete(T entity, boolean deleted) {
-		this.getDao().delete(entity, deleted);
-		logAction(SERVICE_ACTION_DELETE, entity);
 	}
 
 	@Transactional(readOnly = false)
