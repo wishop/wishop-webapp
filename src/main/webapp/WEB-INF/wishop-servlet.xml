@@ -26,5 +26,16 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>
 	-->
+	
+	<!-- ######################################## Internationalisation ####################################### -->
+	
+	<!--The LocaleChangeInterceptor is configured to look for the parameter name 'locale' to indicate 
+    	a change of the user's locale, and is registered as an interceptor using the Spring MVC Namespace.
+    	Adding 'locale=pt' to a URL will change the locale to Portuguese. 
+    	The SessionLocaleResolver keeps the user's currently configured locale in session scope. -->
+	<mvc:interceptors>  
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="locale" />
+	</mvc:interceptors>
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
 
 </beans>
