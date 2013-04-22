@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wishop.dao.BaseDAO;
 
 @Service
+@Transactional 
 public interface BaseService<X extends BaseDAO<T, Long>, T> {
 
 	/**
