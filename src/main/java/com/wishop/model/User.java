@@ -36,7 +36,6 @@ public class User extends BaseObject<User, Long> {
 	private String fax;
 	private Date dateOfBirth;
 	
-	@Lob
 	private String profile;
 	
 	@Column(nullable=false, columnDefinition="bool default true")
