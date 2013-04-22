@@ -23,7 +23,7 @@ public class AuditLogRecord<ID extends Serializable> implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator="generatorName")
-	@TableGenerator(name="generatorName", allocationSize=1) 
+	@TableGenerator(name="generatorName", allocationSize=1, table="wishop_keys", pkColumnName="table_name", valueColumnName="next_value")
     protected Long id;
 	
 	@Column(nullable=false)

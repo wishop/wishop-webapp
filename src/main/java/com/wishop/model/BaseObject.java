@@ -26,7 +26,7 @@ public abstract class BaseObject<T, ID extends Serializable> implements Auditabl
 	@Type(type="long")
 	@Column(nullable=false)
 	@GeneratedValue(strategy = GenerationType.TABLE, generator="generatorName")
-	@TableGenerator(name="generatorName", allocationSize=1) 
+	@TableGenerator(name="generatorName", allocationSize=1, table="wishop_keys", pkColumnName="table_name", valueColumnName="next_value") 
 	protected ID id;
 	
 	@Column(nullable=false)
