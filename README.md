@@ -70,16 +70,20 @@ _This brief document tries to give a simple but effective explanation of how the
  * **daoContext-web.xml**: All the relevant beans to setup the DAO layer for the JBoss Application
  * **jboss-deployment-structure.xml**: File used for JBoss deployment
 
+
 ### Spring MVC
  * The default package on the project is `com.wishop.mvc`
+ * **web.xml**: File where the DispatcherServlet servlet is declared
+ * **wishop-servlet.xml**: Configuration file where all the Spring MVC beans are declared
  
 
 ##Still missing
 
-### Spring Security
-
-
 ### Apache Tiles
+
+
+
+### Spring Security
 
 
 ### Spring Social
