@@ -19,7 +19,8 @@ _This brief document tries to give a simple but effective explanation of how the
 
 ### Hibernate
  * The wishop object-relational mapping (ORM) framework. Maps an object-oriented domain model to a DB table
- * **daoContext-app.xml**: All the relevant Spring beans to setup the DAO layer
+ * **daoContext-app.xml**: All the relevant beans to setup the DAO layer for the Java Application
+ * **daoContext-web.xml**: All the relevant beans to setup the DAO layer for the JBoss Application 
  * **hibernate-cfg.xml**: Has all the hibernate properties for the DB connection 
 
 
@@ -58,10 +59,30 @@ _This brief document tries to give a simple but effective explanation of how the
  * **Maven integration**: on the CLI, go to the folder and run `mvn clean test`
 
 
-##Still missing
+### JBoss AS Integration
+ * On Eclipse perform the following tasks:
+  * Right click on the project > Properties > Web Project Settings > Change context root to "/" > Save. This will inform Eclipse what is the correct context root.
+  * Right click on the project > Properties > Project Web Facets > Activate it > Choose Dynamic Web Module > Save. This will allow Eclipse to do the Run/Debug As Server.
+  * Right click on the project > Properties > Deployment Assembly > Add > Java Build Path Entries > Maven
+  * Right click on the project > Properties > Deployment Assembly > Add > Folder > `src/main/webapp` and all folders under `java/main/resources`
+ * **jboss-web.xml**: This file informs the JBossAS that the context root should be "/" instead of the default "/wishop-webapp/"
+ * **persistence.xml**:  This is a standard configuration file in JPA. In JBoss AS the default and only recommended JPA provider is Hibernate. This file configures the EntityManager.
+ * **daoContext-web.xml**: All the relevant beans to setup the DAO layer for the JBoss Application
+ * **jboss-deployment-structure.xml**: File used for JBoss deployment
 
 ### Spring MVC
+ * The default package on the project is `com.wishop.mvc`
+ 
+
+##Still missing
+
+### Spring Security
+
+
+### Apache Tiles
+
 
 ### Spring Social
+
 
 ### JSTL 

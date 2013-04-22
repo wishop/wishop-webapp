@@ -14,17 +14,20 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- Spring version -->
-        <version.spring>3.2.2.RELEASE</version.spring>
 
 		<!-- Application properties -->
 		<wishop.version>0.0.1</wishop.version>
+		<!--  
 		<hibernate.version>4.1.10.Final</hibernate.version>
+		--><hibernate.version>4.0.1.Final</hibernate.version>
 		<spring.version>3.1.1.RELEASE</spring.version>
     	<postgresql.version>9.1-901.jdbc4</postgresql.version>
     	<ehcache.version>2.6.5</ehcache.version>
     	<ehcache.terracota.version>2.1.1</ehcache.terracota.version>
     	<aspectj.version>1.5.4</aspectj.version>
+    	
+    	<!-- JBoss AS plugin for deployment -->
+        <version.jboss.as.maven.plugin>7.1.1.Final</version.jboss.as.maven.plugin>
     	
     	<!-- Maven properties -->
     	<version.compiler.plugin>2.3.1</version.compiler.plugin>
@@ -71,6 +74,8 @@
 			<artifactId>spring-security-core</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		<!-- Spring MVC dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -81,6 +86,18 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		<!-- JSTL/Servlet Dependencies -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-servlet_3.0_spec</artifactId>
+			<version>1.0</version>
+		</dependency> 
 		
 		<!-- TDD & jUnit dependencies -->
 		<dependency>
@@ -106,6 +123,13 @@
       		<artifactId>aspectjweaver</artifactId>
       		<version>${aspectj.version}</version>
     	</dependency>
+    	
+    	<!-- Java Reflection dependencies -->
+    	<dependency>
+			<groupId>javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.12.1.GA</version>
+		</dependency>
 		
 		<!-- Apache Commons dependencies -->
 		<dependency>
@@ -119,30 +143,13 @@
 			<version>1.3.2</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-servlet_3.0_spec</artifactId>
-			<version>1.0</version>
-		</dependency>
-		
+		<!-- Postgres & DB dependencies -->
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${postgresql.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.12.1.GA</version>
-		</dependency>
-		
 		<!--Logging Dependencies-->
 		<dependency>
 			<groupId>log4j</groupId>
@@ -163,6 +170,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.6.4</version>
+		</dependency>
 		
 		 <!-- 	EHCache - Wishop 2nd level cache 
 				For documentation: http://www.ehcache.org/documentation/user-guide/hibernate -->
@@ -176,14 +188,44 @@
 			<artifactId>ehcache-terracotta</artifactId>
 			<version>${ehcache.terracota.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jdk14</artifactId>
-			<version>1.6.4</version>
-		</dependency>
+		
 	</dependencies>
 	
 	<build>
          <finalName>${project.artifactId}</finalName>
+         <pluginManagement>
+			<plugins>
+				<!-- Generate Schema -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>hibernate3-maven-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<components>
+							<component>
+								<name>hbm2ddl</name>
+              					<implementation>annotationconfiguration</implementation>
+							</component>
+						</components>
+						<componentProperties>
+							<configurationfile>/src/main/resources/META-INF/springApp/hibernate.cfg.xml</configurationfile>
+							<outputfilename>schema.ddl</outputfilename>
+							<namingstrategy>com.wishop.dao.utils.WishopNamingStrategy</namingstrategy>
+							<drop>false</drop>
+							<update>true</update>
+							<export>true</export>
+							<format>true</format>
+						</componentProperties>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+							<version>${postgresql.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
     </build>
 </project>
