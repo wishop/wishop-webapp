@@ -15,7 +15,6 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wishop.model.Address;
@@ -120,20 +119,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	}
 
 	@Test
-	public void testGetAllByDeleteBasis() {
-		boolean deletedUsers = false;
-		List<User> users = userService.getAll(deletedUsers);
-		User user = users.get(0);
-		Assert.assertNotNull(users);
-		Assert.assertEquals(USERS_LIST_SIZE, users.size());
-		user.setDeleted(true);
-		userService.update(user);
-		Assert.assertEquals(1,userService.getAll(true).size());
-		//TODO: is the delete flag all that important? it is already causing issues with the cache. as in this example
-		Assert.assertEquals(USERS_LIST_SIZE,userService.getAll(deletedUsers).size());
-	}
-
-	@Test
 	public void testGetAllByPagination() {
 		List<User> users = userService.getAll(1,3);
 		Assert.assertNotNull(users);
@@ -183,22 +168,6 @@ public class JUnitUserServiceTest implements UserServiceTest {
 		Assert.assertEquals("test.user3@mailinator.com", user.getEmail());
 		Assert.assertEquals("Joy Street", user.getAddress().getAddressLine3());
 		userService.purge(user);
-	}
-
-	@Test
-	public void testDelete() {
-		List<User> users = userService.getAll();
-		Assert.assertNotNull(users);
-		Assert.assertEquals(USERS_LIST_SIZE, users.size());
-		User user = users.get(0);
-		userService.delete(user, true);
-		users = userService.getAll();
-		Assert.assertNotNull(users);
-		Assert.assertEquals(USERS_LIST_SIZE-1, users.size());
-		userService.delete(user, false);
-		users = userService.getAll();
-		Assert.assertNotNull(users);
-		Assert.assertEquals(USERS_LIST_SIZE, users.size());
 	}
 
 	@Test

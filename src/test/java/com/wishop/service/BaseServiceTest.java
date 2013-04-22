@@ -25,11 +25,6 @@ public interface BaseServiceTest {
 	public void testGetAllExceptOne();
 
 	/**
-	 * Test the BaseService <code>getAll(boolean delete)</code> method.<br>
-	 */
-	public void testGetAllByDeleteBasis();
-
-	/**
 	 * Test the BaseService <code>getAll(int firstResult, int maxResults)</code>
 	 * method.<br>
 	 */
@@ -56,11 +51,6 @@ public interface BaseServiceTest {
 	 * Test the BaseService <code>saveOrUpdate(Entity entity)</code> method.<br>
 	 */
 	public void testSaveOrUpdate();
-
-	/**
-	 * Test the BaseService <code>delete(Entity entity)</code> method.<br>
-	 */
-	public void testDelete();
 
 	/**
 	 * Test the BaseService <code>purge(Entity entity)</code> method.<br>
