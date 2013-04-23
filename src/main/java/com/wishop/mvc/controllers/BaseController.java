@@ -55,7 +55,7 @@ public abstract class BaseController<T, ID extends Serializable> extends WishopF
 	public BaseController(BaseService<?, BaseObject<?, Long>> baseService, BaseValidator<?, Long> baseObjectValidator) {
 		this.baseService = baseService;
 		this.baseObjectValidator = baseObjectValidator;
-		this.entityShortName = ClassUtils.getShortName(getEntityClass()).replaceAll("Base", "base");
+		this.entityShortName = ClassUtils.getShortName(getEntityClass()).toLowerCase();
 	}
 
 	/**
