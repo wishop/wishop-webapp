@@ -12,6 +12,7 @@ import org.hibernate.LockOptions;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +27,8 @@ import com.wishop.utils.WishopMessages;
 @Repository
 public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID>, DAOConstants {
 
-    private Class<T> persistentClass;
+    private static final String OBJECT_ID = "id";
+	private Class<T> persistentClass;
     private SessionFactory sessionFactory;
     private static Logger logger = Logger.getLogger(BaseDAOImpl.class);
 
@@ -75,7 +77,7 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 
 	@SuppressWarnings("unchecked")
 	public List<T> getAll() {
-		return getSession().createCriteria(getPersistentClass()).list();
+		return getSession().createCriteria(getPersistentClass()).addOrder(Order.asc(OBJECT_ID)).list();
     }
 
 	@SuppressWarnings("unchecked")
@@ -83,6 +85,7 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 		Criteria query = null;
 		query = getSession().createCriteria(getPersistentClass());
 		query.add(Restrictions.ne(ID, id));
+		query.addOrder(Order.asc(OBJECT_ID));
 		return query.list();
     }
 	
@@ -92,6 +95,7 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 		query = getSession().createCriteria(getPersistentClass());
 		query.setFirstResult(firstResult);
 		query.setMaxResults(maxResults);
+		query.addOrder(Order.asc(OBJECT_ID));
 		return query.list();
 	}
 
