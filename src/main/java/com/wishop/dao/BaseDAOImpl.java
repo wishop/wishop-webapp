@@ -16,7 +16,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.wishop.dao.exceptions.HibernateSessionException;
-import com.wishop.model.BaseObject;
 import com.wishop.utils.WishopMessages;
 
 /**
@@ -96,14 +95,8 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 		return query.list();
 	}
 
-    @SuppressWarnings("unchecked")
 	public void purge(T entity) {
-    	if(((BaseObject<T,ID>)entity).getAuditInfo().getCreationTimestamp() != null) {
-	    	getSession().delete(entity);
-    	} else {
-    		BaseObject<T,ID> object = (BaseObject<T, ID>) getById(((BaseObject<T,ID>)entity).getId());
-    		getSession().delete(object);
-    	}
+    	getSession().delete(entity);
     	logAction(DAO_ACTION_PURGE, entity);
     }
     
