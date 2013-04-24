@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wishop.model.User;
 
@@ -17,6 +18,7 @@ import com.wishop.model.User;
  *
  */
 @Repository
+@Transactional
 @Component("userDAO")
 public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 	
@@ -69,14 +71,10 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 		query.setString("password", encryptedPassword);
 		return (User) query.uniqueResult();
 	}
-
+	//TODO - Update the audit-info with this call.
 	public void setAccountActive(User user, boolean isAccountActive) {
-		String hql = "UPDATE " + getPersistentClassToString() + " o SET o.accountActive = :isAccountActive WHERE o.id = :id";
-		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
-		query.setParameter("id", user.getId());
-		query.setParameter("isAccountActive", isAccountActive);
-		query.executeUpdate();
-		this.refresh(user);
+		user.setAccountActive(isAccountActive);
+		super.update(user);
 	}
 
 	@SuppressWarnings("unchecked")

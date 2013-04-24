@@ -15,6 +15,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wishop.dao.exceptions.HibernateSessionException;
 import com.wishop.utils.WishopMessages;
@@ -25,6 +26,7 @@ import com.wishop.utils.WishopMessages;
  * @author Paulo Monteiro
  */
 @Repository
+@Transactional
 public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO<T, ID>, DAOConstants {
 
     private static final String OBJECT_ID = "id";
@@ -101,18 +103,21 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
 
 	public void purge(T entity) {
     	getSession().delete(entity);
+    	getSession().flush();
     	logAction(DAO_ACTION_PURGE, entity);
     }
     
     public T save(T entity) throws HibernateException
     {
         getSession().save(entity);
+        getSession().flush();
         logAction(DAO_ACTION_SAVE, entity);
         return entity;
     }
 
     public T saveOrUpdate(T entity) {
     	getSession().saveOrUpdate(entity);
+    	getSession().flush();
     	logAction(DAO_ACTION_SAVE_OR_UPDATE, entity);
         return entity;
     }
@@ -126,11 +131,13 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> implements BaseDAO
     		getSession().merge(entity);
     		logAction(DAO_ACTION_MERGE, entity);
     	}
+    	getSession().flush();
         return entity;
     }
 
     public T refresh(T entity) throws HibernateException
     {
+    	getSession().flush();
         getSession().refresh(entity);
         logAction(DAO_ACTION_REFRESH, entity);
         return entity;
