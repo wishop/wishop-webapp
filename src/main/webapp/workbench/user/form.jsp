@@ -7,7 +7,7 @@
 		<c:otherwise><fmt:message key="user"/></c:otherwise>
 	</c:choose>
 </h2>
-<form:form modelAttribute="user" action="/workbench/user/save" method="${method}" enctype="multipart/form-data">
+<form:form modelAttribute="user" action="/workbench/user/save" method="${method}">
   <table>
     <tr>
       <th>
