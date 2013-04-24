@@ -66,7 +66,7 @@ public class UserController extends BaseController<User, Long>  {
 	 * @return view name for the model
 	 */
 	@Override
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value="/create", method = RequestMethod.GET)
 	public String create(Model model) {
 		model.addAttribute(getEntityShortName(), getEntityInstance());
 		return WORKBENCH + getEntityShortName() + FORM;

@@ -119,15 +119,16 @@ public class UserValidator extends BaseValidator<User, Long> implements Validato
 	 * @param sessionUser
 	 */
 	public void validatePasswordChange(Errors errors, User user, User sessionUser) {
-		if((sessionUser.equals(user))) {
-			if(StringUtils.isEmpty(user.getCurrentPassword())) {
-				errors.rejectValue(PARAM_CURRENT_PASSWORD, FIELD_REQUIRED, "Form field required");
-			} 
-			User dbUser = ((UserService)getBaseService()).getUserByIdAndPassword(user, user.getCurrentPassword());
-			if(dbUser == null) {
-				errors.rejectValue(PARAM_CURRENT_PASSWORD, FORM_OLD_PASSWORD_IS_INCORRECT, "Form field required");
-			}
-		} 
+//		TODO: UserValidator.validatePasswordChange(..) - Once Spring Security is in place this needs to be revisited 
+//		if((sessionUser.equals(user))) {
+//			if(StringUtils.isEmpty(user.getCurrentPassword())) {
+//				errors.rejectValue(PARAM_CURRENT_PASSWORD, FIELD_REQUIRED, "Form field required");
+//			} 
+//			User dbUser = ((UserService)getBaseService()).getUserByIdAndPassword(user, user.getCurrentPassword());
+//			if(dbUser == null) {
+//				errors.rejectValue(PARAM_CURRENT_PASSWORD, FORM_OLD_PASSWORD_IS_INCORRECT, "Form field required");
+//			}
+//		} 
 		validatePassword(errors, user, sessionUser);
 	}
 
