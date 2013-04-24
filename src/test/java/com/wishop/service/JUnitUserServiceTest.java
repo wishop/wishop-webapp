@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.wishop.model.Address;
 import com.wishop.model.AuditInfo;
+import com.wishop.model.AuditLogRecord;
 import com.wishop.model.User;
 
 @Transactional
@@ -29,13 +30,22 @@ import com.wishop.model.User;
 @TransactionConfiguration(defaultRollback = true)
 public class JUnitUserServiceTest implements UserServiceTest {
 
+	private static final String USER_ENTITY_CLASS_NAME = "com.wishop.model.User";
 	private static final String TEST_USER_EMAIL_1 = "test.user@mailinator.com";
 	private static final String TEST_USER_EMAIL_2 = "test.user2@mailinator.com";
-
+	
 	private static final int USERS_LIST_SIZE = 3;
+
+	/**
+	 * To be incremented as the tests are performed
+	 */
+	private static int AUDIT_LOG_RECORD_TEST_INDEX = 0;
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private AuditLogRecordService<Long> auditLogRecordService;
 	
 	@Autowired
 	private Md5PasswordEncoder passwordEncoder;
@@ -135,12 +145,14 @@ public class JUnitUserServiceTest implements UserServiceTest {
 
 	@Test
 	public void testSave() {
+		AuditLogRecord<Long> auditLogRecordOld = auditLogRecordService.getLatest();
 		User newUser =  createUser();
 		userService.save(newUser);
 		List<User> users = userService.getAll();
 		Assert.assertNotNull(users);
 		Assert.assertEquals(USERS_LIST_SIZE+1, users.size());
 		testUser(userService.getByEmail(TEST_USER_EMAIL_2), TEST_USER_EMAIL_2);
+		testAuditLogRecord(auditLogRecordOld, newUser);
 	}
 
 	/**
@@ -148,6 +160,7 @@ public class JUnitUserServiceTest implements UserServiceTest {
 	 */
 	@Test
 	public void testSaveOrUpdate() {
+		AuditLogRecord<Long> auditLogRecordOld = auditLogRecordService.getLatest();
 		List<User> users = userService.getAll();
 		User newUser =  createUser();
 		userService.saveOrUpdate(newUser);
@@ -155,19 +168,23 @@ public class JUnitUserServiceTest implements UserServiceTest {
 		Assert.assertNotNull(users);
 		Assert.assertEquals(USERS_LIST_SIZE+1, users.size());
 		testUser(userService.getByEmail(TEST_USER_EMAIL_2), TEST_USER_EMAIL_2);
+		testAuditLogRecord(auditLogRecordOld, newUser);
 	}
 
 	@Test
 	public void testUpdate() {
+		AuditLogRecord<Long> auditLogRecordOld = auditLogRecordService.getLatest();
 		User user = userService.getByEmail("test.user@mailinator.com");
 		user.setEmail("test.user3@mailinator.com");
 		user.getAddress().setAddressLine3("Joy Street");
 		userService.update(user);
+		testAuditLogRecord(auditLogRecordOld, user);
 		user =  userService.getByEmail("test.user3@mailinator.com");
 		Assert.assertNotNull(user);
 		Assert.assertEquals("test.user3@mailinator.com", user.getEmail());
 		Assert.assertEquals("Joy Street", user.getAddress().getAddressLine3());
 		userService.purge(user);
+		testAuditLogRecord(auditLogRecordOld, user);
 	}
 
 	@Test
@@ -207,6 +224,21 @@ public class JUnitUserServiceTest implements UserServiceTest {
 		Assert.assertNotNull(auditInfo);
 		Assert.assertEquals(-1l, auditInfo.getCreatorUserId());
 		Assert.assertEquals(-1l, auditInfo.getModifierUserId());
+	}
+	
+	/**
+	 *  Test the AuditLogRecord data, based on each User CRUD action
+	 * 
+	 * @param auditLogRecordOld
+	 * @param newUser The latest changed user
+	 */
+	private void testAuditLogRecord(AuditLogRecord<Long> auditLogRecordOld,	User newUser) {
+		AuditLogRecord<Long> auditLogRecord = auditLogRecordService.getLatest();
+		Assert.assertNotNull(auditLogRecord);
+		Assert.assertEquals(auditLogRecordOld.getId().longValue()+ ++AUDIT_LOG_RECORD_TEST_INDEX,auditLogRecord.getId().longValue());
+		Assert.assertEquals(USER_ENTITY_CLASS_NAME,auditLogRecord.getEntityClass().getName());
+		Assert.assertEquals(newUser.getId().longValue(), auditLogRecord.getEntityId().longValue());
+		Assert.assertEquals(-1, auditLogRecord.getUserId().longValue());
 	}
 	
 	/**
