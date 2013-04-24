@@ -33,4 +33,11 @@ public interface AuditLogRecordDAO<ID extends Serializable> {
 	 * @param entity
 	 */
     public void logAction(AuditLogRecord<ID> entity);
+
+    /**
+	 * This returns the latest inserted AuditLogRecord.
+	 * Useful for the JUnit tests
+	 * @return AuditLogRecord
+	 */
+	public AuditLogRecord<ID> getLatest();
 }

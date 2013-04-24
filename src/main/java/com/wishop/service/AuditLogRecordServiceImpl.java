@@ -43,4 +43,9 @@ public class AuditLogRecordServiceImpl<ID extends Serializable> implements Audit
 		getDao().save(entity);
 		logAction(entity);
 	}
+
+	public AuditLogRecord<ID> getLatest() {
+		return getDao().getLatest();
+	}
+	
 }

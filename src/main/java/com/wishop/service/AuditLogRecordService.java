@@ -28,6 +28,13 @@ public interface AuditLogRecordService<ID extends Serializable> {
 	public void save(AuditLogRecord<ID> entity);
 	
 	/**
+	 * This returns the latest inserted AuditLogRecord.
+	 * Useful for the JUnit tests
+	 * @return AuditLogRecord
+	 */
+	public AuditLogRecord<ID> getLatest();
+	
+	/**
 	 * Method responsible for logging the actions
 	 * @param service
 	 * @param entity
