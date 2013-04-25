@@ -22,12 +22,16 @@ _This brief document tries to give a simple but effective explanation of how the
  * **daoContext-app.xml**: All the relevant beans to setup the DAO layer for the Java Application
  * **daoContext-web.xml**: All the relevant beans to setup the DAO layer for the JBoss Application 
  * **hibernate-cfg.xml**: Has all the hibernate properties for the DB connection 
+ * **Documentation**: 
+  * http://docs.jboss.org/hibernate/orm/4.0/manual/en-US/html/
 
 
 ### Spring Core
  * The wishop application framework and inversion of control container, responsible for injecting and wiring up the beans.
  * **applicationContext-app.xml**: Contains all the relevant application beans, including model, service, dao, audit, internationalization, cache, aspects, etc
  * **WishopApplicationContext**: Provides an access to the Spring Framework context. With it we can access the beans.
+ * **Documentation**: 
+  * http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/
 
 
 ### Internationalization
@@ -68,7 +72,9 @@ _This brief document tries to give a simple but effective explanation of how the
  * **jboss-web.xml**: This file informs the JBossAS that the context root should be "/" instead of the default "/wishop-webapp/"
  * **persistence.xml**:  This is a standard configuration file in JPA. In JBoss AS the default and only recommended JPA provider is Hibernate. This file configures the EntityManager.
  * **daoContext-web.xml**: All the relevant beans to setup the DAO layer for the JBoss Application
- * **jboss-deployment-structure.xml**: File used for JBoss deployment
+ * **jboss-deployment-structure.xml**: File used for JBoss deployment (_nothing relevant there yet_)
+ * **Documentation**:
+  * https://docs.jboss.org/author/display/AS71/All+JBoss+AS+7+documentation
 
 
 ### Spring MVC
@@ -77,10 +83,22 @@ _This brief document tries to give a simple but effective explanation of how the
  * **wishop-servlet.xml**: Configuration file where all the Spring MVC beans are declared
  
 
-##Still missing
+### JSTL 
+ * The Tag library for the JSP pages.
+ * The file `src/main/webapp/WEB-INF/jsp/includes.jsp` contains all the important JSTL tags
+
 
 ### Apache Tiles
+ * Apache Tiles is a templating framework built to simplify the development of web application user interfaces.
+ * **tiles.xml**: File that holds the Tiles definitions. In addition to this file all Tiles templates are under `src/main/webapp/WEB-INF/tiles`
+ * **Documentation**:
+  * http://tiles.apache.org/framework/tutorial/index.html
+  * http://tech.finn.no/2012/07/25/the-ultimate-view-tiles-3/ 
 
+
+##Still missing
+
+### Mockito
 
 
 ### Spring Security
@@ -89,4 +107,4 @@ _This brief document tries to give a simple but effective explanation of how the
 ### Spring Social
 
 
-### JSTL 
+
