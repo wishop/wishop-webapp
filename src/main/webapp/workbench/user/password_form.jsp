@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/jsp/includes.jsp" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
 <h2>
 	<fmt:message key="tag.changePassword"/>
 </h2>
@@ -33,5 +32,3 @@
     </tr>
   </table>
 </form:form>
-
-<%@ include file="/WEB-INF/jsp/footer.jsp" %>

@@ -1,6 +1,5 @@
-<%@ page import="java.util.*" %>
 <%@ page import="com.wishop.model.User" %>
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
+<%@ include file="/WEB-INF/jsp/includes.jsp" %>
 
 <h2><fmt:message key="users"/></h2>
 
@@ -28,5 +27,3 @@
     </td>
   </tr>
 </table>
-
-<%@ include file="/WEB-INF/jsp/footer.jsp" %>

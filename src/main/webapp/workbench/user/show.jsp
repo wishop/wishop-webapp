@@ -1,5 +1,4 @@
-<%@ include file="/WEB-INF/jsp/header.jsp" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ include file="/WEB-INF/jsp/includes.jsp" %>
 
 <h2><fmt:message key="user.details"/></h2>
 
@@ -103,6 +102,3 @@
       </td>
     </tr>
   </table>
-
-  
-<%@ include file="/WEB-INF/jsp/footer.jsp" %>
