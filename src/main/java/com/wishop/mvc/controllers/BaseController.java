@@ -73,7 +73,7 @@ public abstract class BaseController<T, ID extends Serializable> extends WishopF
 	
 	/**
 	 * Custom handler for displaying Wishop lists of BaseObjects.
-	 * @return a ModelAndWebpage with the model attributes for the view
+	 * @return a ModelMap with the model attributes for the view
 	 */
 	@RequestMapping(value="/list", method = RequestMethod.GET)
 	 public ModelMap list(ModelMap model) {
@@ -85,7 +85,7 @@ public abstract class BaseController<T, ID extends Serializable> extends WishopF
 	 * Custom handler for displaying a Wishop BaseObject.
 	 *
 	 * @param objectId the ID of the view to display
-	 * @return a ModelMap with the model attributes for the view
+	 * @return a ModelAndView with the model attributes for the view
 	 */
 	@RequestMapping("/show/{objectId}")
 	public ModelAndView show(@PathVariable("objectId") int objectId) {
