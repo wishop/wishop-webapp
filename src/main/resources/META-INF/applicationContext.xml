@@ -14,7 +14,6 @@
 	<context:component-scan base-package="com.wishop.model"/>
 	<context:component-scan base-package="com.wishop.dao"/>
 	<context:component-scan base-package="com.wishop.service"/>
-	<context:component-scan base-package="com.wishop.web"/>
 	
     <!-- Spring Application Context provider-->
 	<bean id="applicationContextProvider" class="com.wishop.utils.WishopApplicationContext" />
@@ -39,14 +38,10 @@
 	<!-- ########################################## Spring EH Cache ########################################## --> 
 	<!-- EHCache - Wishop's 2nd level cache-->
 	<cache:annotation-driven cache-manager="cacheManager"/>
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cache-manager-ref="ehcache"/>
-	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:config-location="classpath:cache/ehcache.xml" p:shared="true"/>
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" 
+		p:cache-manager-ref="ehcache"/>
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" 
+		p:config-location="classpath:cache/ehcache.xml" 
+		p:shared="true"/>
 	
-	<!-- ########################################## Spring Aspects/AOP ####################################### -->
-	<!-- Advices -->
-    <bean id="auditLog" class="com.wishop.service.aspects.AuditLog"/>
-    <aop:aspectj-autoproxy>
-    	<aop:include name="auditLog" />
-    </aop:aspectj-autoproxy>
-
 </beans>

@@ -10,11 +10,7 @@
 		http://www.springframework.org/schema/aop		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 		http://www.springframework.org/schema/mvc 		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
-	<context:component-scan base-package="com.wishop.model"/>
-	<context:component-scan base-package="com.wishop.service"/>
-	<context:component-scan base-package="com.wishop.service.aspects"/>
 	<context:component-scan base-package="com.wishop.mvc"/>
-	<context:component-scan base-package="com.wishop.dao"/>
 
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" p:order="1" p:pathPrefix="/workbench/" p:caseSensitive="true" />
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" p:order="2" />
@@ -58,14 +54,4 @@
 	</mvc:interceptors>
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
 	
-	<!-- ########################################## Spring Aspects/AOP ####################################### -->
-	<!-- Advices. 
-		This is duplicated here as in the applicationContext.xml file, to have them available for the Dispatcher Servlet as
-		well as the services layer when running the WishopMain Java application  
-	-->
-	<bean id="auditLog" class="com.wishop.service.aspects.AuditLog"/>
-    <aop:aspectj-autoproxy>
-    	<aop:include name="auditLog" />
-    </aop:aspectj-autoproxy>
-
 </beans>
