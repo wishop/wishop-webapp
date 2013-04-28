@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.wishop.model.AuditInfo;
 import com.wishop.model.AuditLogRecord;
-import com.wishop.model.BaseObject;
 import com.wishop.model.Auditable;
+import com.wishop.model.BaseObject;
 import com.wishop.model.User;
 import com.wishop.model.exceptions.WishopException;
 import com.wishop.service.AuditLogConstants;
@@ -181,54 +181,6 @@ public class AuditLog implements AuditLogConstants {
 	}
 	
 	
-	/**
-	 * Method that uses @AspectJ around advice annotation.
-	 * Here the @Around annotation indicates that the log() method is to be applied as around advice to the 
-	 * com.wishop.service.BaseService.delete() pointcut (where to apply aspects).
-	 * Note that com.wishop.service.BaseService.delete() is a method inherited by all the Wishop services. 
-	 * This way we ensure that every object model  will get the correct AuditInfo. 
-	 * <b>ProceedingJoinPoint</b> is an object that carries the target proxied bean, the method signature, method arguments, and 
-	 * needs to explicitly call proceed(), doing a call to the proxied bean method.
-	 * This is the most transparent way of using AOP. 
-	 * 
-	 * The action also gets logged in the AuditLogRecord table.
-	 * 
-	 * @param jp ProceedingJoinPoint
-	 */
-	@Around("execution(* com.wishop.service.BaseService.delete(..))")
-	public void logDelete(ProceedingJoinPoint jp) {
-		BaseObject<Auditable<Long>, Long> baseObject = null;
-		AuditLogRecord<Long> auditLogRecord = new AuditLogRecord<Long>();
-		Date now = Calendar.getInstance().getTime();
-		User user = WishopSecurityContext.getSessionUser();
-		Boolean deleted = false;
-		
-		try {
-			List<Object> list = Arrays.asList(jp.getArgs());	
-			if (list == null || list.size() != 2) {
-				throw new HibernateException(WishopMessages.getMessage(AUDIT_NO_OBJECT_TO_SAVE, (String) jp.getSignature().toShortString()));
-			}
-			
-			//saves the BaseObject auditInfo and gets the new deleted state
-			baseObject = updateAuditInfoOnDelete(jp, list, baseObject, user, now);
-			deleted = (Boolean) list.get(1);
-			
-			//proceed with the proxied method
-			jp.proceed();
-			
-			//add action to the AuditLogRecord table
-			if (deleted) { 
-				//if the current state of the object is undeleted, then this is a delete action
-				logAction(baseObject, auditLogRecord, now, user, AUDIT_ACTION_DELETE);
-			} else {
-				//if the current state of the object is deleted, then this is an undelete action
-				logAction(baseObject, auditLogRecord, now, user, AUDIT_ACTION_UNDELETE);
-			}
-		} catch (Throwable e) { 
-			auditLogger.error(WishopMessages.getMessage(AUDIT_ERROR_WHILE_SAVING, baseObject));
-			throw new HibernateException(WishopMessages.getMessage(AUDIT_ERROR_WHILE_SAVING, baseObject.getClass().getName()), e);
-		} 
-	}
 	
 	/**
 	 * Method that uses @AspectJ around advice annotation.
