@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * JavaBean Workbench controller that is used to respond to <code>Workbench</code> requests.
+ * Simple JavaBean Workbench controller that is used to respond to <code>Workbench</code> requests.
  * @author Paulo Monteiro
  *
  */

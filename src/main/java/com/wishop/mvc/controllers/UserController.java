@@ -1,6 +1,7 @@
 package com.wishop.mvc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,13 +32,15 @@ import com.wishop.utils.WishopSecurityContext;
 @Controller 
 @RequestMapping("/workbench/user")
 @SessionAttributes(value = {"user"})
-public class UserController extends BaseController<User, Long>  {
+public class UserController extends BaseControllerImpl<User, Long>  {
 
 	private static final String PASSWORD_FORM = "/password_form";
 
 	public static final String FORM_STATUS_UPDATE = "UPDATE";
 	public static final String FORM_STATUS_SUBMIT = "SUBMIT";
 	
+	@Autowired
+	private Md5PasswordEncoder passwordEncoder;
 	
 	/**
 	 * UserController Constructor
@@ -58,6 +61,25 @@ public class UserController extends BaseController<User, Long>  {
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder, WebRequest request) {
 		super.initBinder(dataBinder, request);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/save", method = RequestMethod.POST)
+	public String save(@ModelAttribute User user, BindingResult result, SessionStatus status) throws WishopException {
+		this.getBaseObjectValidator().validate(user, result);
+		if (result.hasErrors()) {
+			return WORKBENCH + getEntityShortName() + FORM;
+		} else {
+			if(user.isNew()) {
+				user.setPassword(passwordEncoder.encodePassword(user.getPassword(), user.getEmail()));
+				getBaseService().save(user);
+			} else {
+				getBaseService().update(user);
+			}
+			status.setComplete();
+			return REDIRECT + WORKBENCH + getEntityShortName() + SHOW + user.getId();
+		}
 	}
 	
 	/**
@@ -90,7 +112,7 @@ public class UserController extends BaseController<User, Long>  {
 	 * @return View name, to redirect the user to
 	 */
 	@RequestMapping(value="/enableAccount", method=RequestMethod.POST)
-    public String enableAccount(User user) {
+    public String enableAccount(@ModelAttribute User user) {
 		((UserService)getBaseService()).setAccountActive(user, true);
         return REDIRECT + WORKBENCH + getEntityShortName() + SHOW + user.getId();
     }
@@ -101,7 +123,7 @@ public class UserController extends BaseController<User, Long>  {
 	 * @return View name, to redirect the user to
 	 */
 	@RequestMapping(value="/disableAccount", method=RequestMethod.POST)
-    public String disableAccount(User user) {
+    public String disableAccount(@ModelAttribute User user) {
 		((UserService)getBaseService()).setAccountActive(user, false);
 		return REDIRECT + WORKBENCH + getEntityShortName() + SHOW + user.getId();
     }
@@ -128,7 +150,6 @@ public class UserController extends BaseController<User, Long>  {
 	 */
 	@RequestMapping(value="/updatePassword", method = RequestMethod.POST)
 	public String updatePassword(@ModelAttribute User user,	BindingResult result, SessionStatus status) throws WishopException {
-		//TODO: CHECK TO SEE If THE CURRENT PASSWORD IS CORRECT
 		((UserValidator)getBaseObjectValidator()).setUserFormStatus(FORM_STATUS_SUBMIT);
 		((UserValidator)getBaseObjectValidator()).validatePasswordChange(result, user, WishopSecurityContext.getSessionUser());
 		if (result.hasErrors()) {
