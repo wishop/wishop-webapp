@@ -54,11 +54,13 @@ _This brief document tries to give a simple but effective explanation of how the
  
 ### AspectsJ (AOP)
  * AspectJ is an aspect-oriented extension. Allowing wishop to manage mundane tasks, that should be done but the programmer should not need to repeat it throughout the code.
- * **AuditLog.java**: Class responsible for using the AspectsJ. It simply adds the AuditInfo (creation timestamp, creation user id, modification timestamp, modification user id) to all BaseObject classes and creates new entry on the AuditLogRecord. This will provide information about the who/when information against a business object.  
+ * **AuditLog.java**: Class responsible for using the AspectsJ. It simply adds the AuditInfo (creation timestamp, creation user id, modification timestamp, modification user id) to all BaseObject classes and creates new entry on the AuditLogRecord. This will provide information about the who/when information against a business object.
+ * **Documentation:**
+  *  http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/aop.html
 
 
-### jUnit (TDD)
- * The wishop Test Driven Development (TDD) framework
+### jUnit (TDD) & Spring Test
+ * The wishop Test Driven Development (TDD) frameworks
  * **src/test/java**: Package where all the tests should be placed.
  * **Maven integration**: on the CLI, go to the folder and run `mvn clean test`
  * **Documentation**:
