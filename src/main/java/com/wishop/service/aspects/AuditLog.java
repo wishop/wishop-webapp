@@ -310,37 +310,6 @@ public class AuditLog implements AuditLogConstants {
 	}
 	
 	/**
-	 * Saves the BaseObject auditInfo when a delete action is requested. <br>
-	 * Only the <b>ModificationTimestamp</b> and the <b>ModifierUser</b> are updated. <br>
-	 * Adds the Creation Timestamp, Modification Timestamp, Creator ID and Modifier ID
-	 * @param jp 
-	 * @param list
-	 * @param baseObject
-	 * @param user 
-	 * @param now 
-	 * @return BaseObject
-	 */
-	@SuppressWarnings("unchecked")
-	private BaseObject<Auditable<Long>, Long> updateAuditInfoOnDelete(ProceedingJoinPoint jp, List<Object> list, 
-			BaseObject<Auditable<Long>, Long> baseObject, User user, Date now) {
-		AuditInfo<Long> auditInfo = null;
-		
-		baseObject =  (BaseObject<Auditable<Long>, Long>) list.get(0);
-		
-		auditInfo = baseObject.getAuditInfo();
-		auditInfo.setModificationTimestamp(now);
-		
-		//modifier user id
-		if (user != null) {
-		    auditInfo.setModifierUserId((Long) user.getId());
-		} else {
-		    auditInfo.setModifierUserId(new Long(SYSTEM_USER));
-		}
-		
-		return baseObject;
-	}
-	
-	/**
 	 * Add action to the the AuditLogRecord table and to the log
 	 * @param baseObject
 	 * @param auditLogRecord

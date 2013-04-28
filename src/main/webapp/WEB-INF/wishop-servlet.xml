@@ -58,6 +58,11 @@
 	</mvc:interceptors>
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
 	
+	<!-- ########################################## Spring Aspects/AOP ####################################### -->
+	<!-- Advices. 
+		This is duplicated here as in the applicationContext.xml file, to have them available for the Dispatcher Servlet as
+		well as the services layer when running the WishopMain Java application  
+	-->
 	<bean id="auditLog" class="com.wishop.service.aspects.AuditLog"/>
     <aop:aspectj-autoproxy>
     	<aop:include name="auditLog" />
