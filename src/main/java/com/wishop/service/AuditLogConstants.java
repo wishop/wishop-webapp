@@ -7,6 +7,7 @@ package com.wishop.service;
  */
 public interface AuditLogConstants {
 
+	//Base Audit 
 	public static final String AUDIT_ACTION_DELETE = "AUDIT_ACTION_DELETE";
 	public static final String AUDIT_ACTION_PURGE = "AUDIT_ACTION_PURGE";
 	public static final String AUDIT_ACTION_SAVE = "AUDIT_ACTION_SAVE";
@@ -19,4 +20,7 @@ public interface AuditLogConstants {
 	public static final String AUDIT_NO_OBJECT_TO_SAVE = "AUDIT_NO_OBJECT_TO_SAVE";
 	public static final String AUDIT_NO_OBJECT_TO_SAVE_OR_UPDATE = "AUDIT_NO_OBJECT_TO_SAVE_OR_UPDATE";
 	public static final String AUDIT_NO_OBJECT_TO_UPDATE = "AUDIT_NO_OBJECT_TO_UPDATE";
+	
+	//User Audit
+	public static final String AUDIT_USER_SET_ACTIVE_ACCOUNT = "AUDIT_USER_SET_ACTIVE_ACCOUNT";
 }
