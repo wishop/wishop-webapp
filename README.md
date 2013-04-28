@@ -61,6 +61,10 @@ _This brief document tries to give a simple but effective explanation of how the
  * The wishop Test Driven Development (TDD) framework
  * **src/test/java**: Package where all the tests should be placed.
  * **Maven integration**: on the CLI, go to the folder and run `mvn clean test`
+ * **Documentation**:
+  * http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/testing.html#spring-mvc-test-framework
+  * https://github.com/SpringSource/spring-framework/tree/master/spring-test-mvc
+  * http://blog.zenika.com/index.php?post/2013/01/15/spring-mvc-test-framework
 
 
 ### JBoss AS Integration
