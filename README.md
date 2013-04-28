@@ -87,6 +87,8 @@ _This brief document tries to give a simple but effective explanation of how the
  * The default package on the project is `com.wishop.mvc`
  * **web.xml**: File where the DispatcherServlet servlet is declared
  * **wishop-servlet.xml**: Configuration file where all the Spring MVC beans are declared
+ * **Documentation**:
+  * http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/mvc.html
  
 
 ### JSTL 
