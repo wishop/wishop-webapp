@@ -31,13 +31,6 @@ public interface BaseServiceTest {
 	public void testGetAllByPagination();
 
 	/**
-	 * Test the BaseService
-	 * <code>getAll(int firstResult, int maxResults, boolean deleted)</code>
-	 * method.<br>
-	 */
-	public void testGetAllByPaginationAndByDeleteBasis();
-
-	/**
 	 * Test the BaseService <code>save(Entity entity)</code> method.<br>
 	 */
 	public void testSave();

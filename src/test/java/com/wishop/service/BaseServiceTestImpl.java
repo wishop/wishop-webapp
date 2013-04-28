@@ -6,7 +6,7 @@ package com.wishop.service;
  * @author pmonteiro
  * 
  */
-public abstract class BaseServiceTestImpl implements BaseServiceTest {
+public abstract class BaseServiceTestImpl extends BaseUserTest implements BaseServiceTest {
 
 	
 }
