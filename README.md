@@ -102,9 +102,6 @@ _This brief document tries to give a simple but effective explanation of how the
 
 ##Still missing
 
-### Mockito
-
-
 ### Spring Security
 
 
