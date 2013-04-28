@@ -69,7 +69,7 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that saves or updates a BaseObject. <br>
-	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.AuditLog} aspect.<br>
+	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.BaseAuditLog} aspect.<br>
 	 * Makes use of @CachePut to add a new value to the cache model.
 	 * EH Cache models involved: <b>userCache</b>
 	 * @param entity BaseObject
@@ -78,7 +78,7 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that saves or updates a BaseObject.<br>
-	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.AuditLog} aspect.<br>
+	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.BaseAuditLog} aspect.<br>
 	 * Makes use of @CachePut to add a new value to the cache model. <br>
 	 * EH Cache models involved: <b>userCache</b>
 	 * @param entity BaseObject
@@ -87,7 +87,7 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that update a BaseObject.<br>
-	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.AuditLog} aspect.<br>
+	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.BaseAuditLog} aspect.<br>
 	 * Makes use of @CachePut to add a new value to the cache model. <br>
 	 * EH Cache models involved: <b>userCache</b> 
 	 * @param entity BaseObject
@@ -96,7 +96,7 @@ public interface BaseService<X extends BaseDAO<T, Long>, T> {
 	
 	/**
 	 * BaseObjectService service that update a BaseObject.<br>
-	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.AuditLog} aspect.<br>
+	 * This method is used to provide a pointcut for the {@link com.wishop.service.aspects.BaseAuditLog} aspect.<br>
 	 * Makes use of @CacheEvict to specify a flush action when the method is called. <br>
 	 * EH Cache models involved: <b>userCache</b> 
 	 * @param entity BaseObject
