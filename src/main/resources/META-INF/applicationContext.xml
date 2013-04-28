@@ -45,6 +45,8 @@
 	<!-- ########################################## Spring Aspects/AOP ####################################### -->
 	<!-- Advices -->
     <bean id="auditLog" class="com.wishop.service.aspects.AuditLog"/>
-    <aop:aspectj-autoproxy />
+    <aop:aspectj-autoproxy>
+    	<aop:include name="auditLog" />
+    </aop:aspectj-autoproxy>
 
 </beans>
