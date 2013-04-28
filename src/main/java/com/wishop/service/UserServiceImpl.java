@@ -3,7 +3,7 @@ package com.wishop.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements U
 		return this.getDao().getUserByIdAndPassword(user.getId(), passwordEncoder.encodePassword(rawPass, user.getEmail()));
 	}
 
-	@CacheEvict("userCache")
+	@CachePut("userCache")
 	@Transactional(readOnly=false)
 	public void setAccountActive(User user, boolean isAccountActive) {
 		this.getDao().setAccountActive(user, isAccountActive);
