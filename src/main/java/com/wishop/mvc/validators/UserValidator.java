@@ -13,9 +13,9 @@ import org.springframework.validation.Validator;
 import com.wishop.model.BaseObject;
 import com.wishop.model.User;
 import com.wishop.mvc.WebConstants;
-import com.wishop.mvc.controllers.UserController;
 import com.wishop.service.BaseService;
 import com.wishop.service.UserService;
+import com.wishop.utils.WishopMessages;
 import com.wishop.utils.WishopSecurityContext;
 
 /**
@@ -65,29 +65,28 @@ public class UserValidator extends BaseValidator<User, Long> implements Validato
 	 */
 	@Override
 	public void validate(Object target, Errors errors) {
-		//TODO: FIX EMAIL CONFIRMATION
 		User formUser = (User) target;
 		User sessionUser = WishopSecurityContext.getSessionUser();
 		
-		ValidationUtils.rejectIfEmpty(errors, PARAM_FIRST_NAME, FIELD_REQUIRED, "Form field required");
-		ValidationUtils.rejectIfEmpty(errors, PARAM_LAST_NAME, FIELD_REQUIRED, "Form field required");
+		ValidationUtils.rejectIfEmpty(errors, PARAM_FIRST_NAME, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_REQUIRED));
+		ValidationUtils.rejectIfEmpty(errors, PARAM_LAST_NAME, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_REQUIRED));
 		
 		validateEmail(errors, formUser, sessionUser);
 		validatePassword(errors, formUser, sessionUser);
 		
-		if (!StringUtils.isEmpty(formUser.getTelephone()) && !StringUtils.isNumeric(formUser.getTelephone())) {
-			errors.rejectValue(PARAM_TELEPHONE, FIELD_REQUIRED, "Form field must be numeric");
+		if (StringUtils.isNotEmpty(formUser.getTelephone()) && !StringUtils.isNumeric(formUser.getTelephone())) {
+			errors.rejectValue(PARAM_TELEPHONE, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_MUST_BE_NUMERIC));
 		}
 		
-		if (!StringUtils.isEmpty(formUser.getMobile()) && !StringUtils.isNumeric(formUser.getMobile())) {
-			errors.rejectValue(PARAM_MOBILE, FIELD_REQUIRED, "Form field must be numeric");
+		if (StringUtils.isNotEmpty(formUser.getMobile()) && !StringUtils.isNumeric(formUser.getMobile())) {
+			errors.rejectValue(PARAM_MOBILE, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_MUST_BE_NUMERIC));
 		}
 		
-		if (!StringUtils.isEmpty(formUser.getFax()) && !StringUtils.isNumeric(formUser.getFax())) {
-			errors.rejectValue(PARAM_FAX, FIELD_REQUIRED, "Form field must be numeric");
+		if (StringUtils.isNotEmpty(formUser.getFax()) && !StringUtils.isNumeric(formUser.getFax())) {
+			errors.rejectValue(PARAM_FAX, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_MUST_BE_NUMERIC));
 		}
 		
-		ValidationUtils.rejectIfEmpty(errors, PARAM_DATE_OF_BIRTH, FIELD_REQUIRED, "Form field required");
+		ValidationUtils.rejectIfEmpty(errors, PARAM_DATE_OF_BIRTH, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_REQUIRED));
 		
 	}
 
@@ -99,15 +98,15 @@ public class UserValidator extends BaseValidator<User, Long> implements Validato
 	 * @param oldPassword 
 	 */
 	public void validatePassword(Errors errors, User user, User sessionUser) {
-		if (UserController.FORM_STATUS_SUBMIT.equals(getFormStatus()) && user.isNew()) {
-			ValidationUtils.rejectIfEmpty(errors, PARAM_PASSWORD, FIELD_REQUIRED, "Form field required");
-			ValidationUtils.rejectIfEmpty(errors, PARAM_PASSWORD_CONFIRMATION, FIELD_REQUIRED, "Form field required");
-			if (!user.getPassword().equals(user.getPasswordConfirmation())) {
-				errors.rejectValue(PARAM_PASSWORD_CONFIRMATION, FIELD_REQUIRED, "Password is incorrect");
+		if (/*UserController.FORM_STATUS_SUBMIT.equals(getFormStatus()) && */ user.isNew()) {
+			ValidationUtils.rejectIfEmpty(errors, PARAM_PASSWORD, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_REQUIRED));
+			ValidationUtils.rejectIfEmpty(errors, PARAM_PASSWORD_CONFIRMATION, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_REQUIRED));
+			if (StringUtils.isNotEmpty(user.getPasswordConfirmation()) && !user.getPassword().equals(user.getPasswordConfirmation())) {
+				errors.rejectValue(PARAM_PASSWORD_CONFIRMATION, FIELD_REQUIRED,	WishopMessages.getMessage(FORM_PASSWORD_IS_INCORRECT));
 			}
 			
 			if (!isValidPassword(user.getPassword())) {
-				errors.rejectValue(PARAM_PASSWORD, FIELD_INVALID, "Invalid password");
+				errors.rejectValue(PARAM_PASSWORD, FIELD_INVALID, WishopMessages.getMessage(FORM_INVALID_PASSWORD));
 			}
 		}
 	}
@@ -121,13 +120,14 @@ public class UserValidator extends BaseValidator<User, Long> implements Validato
 	public void validatePasswordChange(Errors errors, User user, User sessionUser) {
 //		TODO: UserValidator.validatePasswordChange(..) - Once Spring Security is in place this needs to be revisited 
 //		if((sessionUser.equals(user))) {
-//			if(StringUtils.isEmpty(user.getCurrentPassword())) {
-//				errors.rejectValue(PARAM_CURRENT_PASSWORD, FIELD_REQUIRED, "Form field required");
-//			} 
-//			User dbUser = ((UserService)getBaseService()).getUserByIdAndPassword(user, user.getCurrentPassword());
-//			if(dbUser == null) {
-//				errors.rejectValue(PARAM_CURRENT_PASSWORD, FORM_OLD_PASSWORD_IS_INCORRECT, "Form field required");
-//			}
+			if (StringUtils.isEmpty(user.getCurrentPassword())) {
+				errors.rejectValue(PARAM_CURRENT_PASSWORD, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_REQUIRED));
+			} else {
+				User dbUser = ((UserService)getBaseService()).getUserByIdAndPassword(user, user.getCurrentPassword());
+				if(dbUser == null) {
+					errors.rejectValue(PARAM_CURRENT_PASSWORD, FIELD_INVALID, WishopMessages.getMessage(FORM_CURRENT_PASSWORD_IS_INCORRECT));
+				}
+			}
 //		} 
 		validatePassword(errors, user, sessionUser);
 	}
@@ -140,20 +140,20 @@ public class UserValidator extends BaseValidator<User, Long> implements Validato
 	 */
 
 	private void validateEmail(Errors errors, User user, User sessionUser) {
-		ValidationUtils.rejectIfEmpty(errors, PARAM_EMAIL, FIELD_REQUIRED, "Form field required");
+		ValidationUtils.rejectIfEmpty(errors, PARAM_EMAIL, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_REQUIRED));
 		if( user.getId() == null) {
-			ValidationUtils.rejectIfEmpty(errors, PARAM_EMAIL_CONFIRMATION, FIELD_REQUIRED, "Form field required");
-			if (!user.getEmail().equals(user.getEmailConfirmation())) {
-				errors.rejectValue(PARAM_EMAIL_CONFIRMATION, FIELD_REQUIRED, "Email is incorrect");
+			ValidationUtils.rejectIfEmpty(errors, PARAM_EMAIL_CONFIRMATION, FIELD_REQUIRED, WishopMessages.getMessage(FORM_FIELD_REQUIRED));
+			if (StringUtils.isNotEmpty(user.getEmailConfirmation()) && !user.getEmail().equals(user.getEmailConfirmation())) {
+				errors.rejectValue(PARAM_EMAIL_CONFIRMATION, FIELD_REQUIRED, WishopMessages.getMessage(FORM_EMAIL_IS_INCORRECT));
 			}
 		}
 		
 		if (!isValidEmail(user.getEmail())) {
-			errors.rejectValue(PARAM_EMAIL, FIELD_INVALID, "Invalid email");
+			errors.rejectValue(PARAM_EMAIL, FIELD_INVALID, WishopMessages.getMessage(FORM_INVALID_EMAIL));
 		}
 		
 		if(!((UserService)getBaseService()).isUniqueEmail(user)) {
-			errors.rejectValue(PARAM_EMAIL, FIELD_INVALID, "Email already exists");
+			errors.rejectValue(PARAM_EMAIL, FIELD_INVALID, WishopMessages.getMessage(FORM_EMAIL_ALREADY_EXISTS));
 		}
 	}
 	
