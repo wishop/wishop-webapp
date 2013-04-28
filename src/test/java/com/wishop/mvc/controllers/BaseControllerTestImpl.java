@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.wishop.model.BaseObject;
-import com.wishop.service.BaseUserTest;
 
 /**
  * This it the BaseController Test class for the workbench area of the wishop site. 
@@ -26,7 +25,7 @@ import com.wishop.service.BaseUserTest;
  * @author pmonteiro
  *
  */
-public abstract class BaseControllerTestImpl extends BaseUserTest implements BaseControllerTest {
+public abstract class BaseControllerTestImpl implements BaseControllerTest {
 	
 	protected static final String REPLACE_VAR = "#";
 
@@ -45,6 +44,8 @@ public abstract class BaseControllerTestImpl extends BaseUserTest implements Bas
 	private static final String REQUEST_EDIT = "/edit/#";
 	private static final String REQUEST_PURGE = "/purge";
 	private static final String REQUEST_SAVE = "/save";
+	
+	private static final int NO_OBJ_ID = -1;
 	
 	@Autowired 
 	private WebApplicationContext ctx;
@@ -78,9 +79,9 @@ public abstract class BaseControllerTestImpl extends BaseUserTest implements Bas
         return result;
 	}
 
-	protected MvcResult show() throws Exception{
-		MvcResult result = perform(get(getShowRequestMapping(USER_ID_3)), this.fowardedURL, _200);
-		assertView(result, getShowResponseMapping(false, NO_USER_ID));
+	protected MvcResult show(long objId) throws Exception{
+		MvcResult result = perform(get(getShowRequestMapping(objId)), this.fowardedURL, _200);
+		assertView(result, getShowResponseMapping(false, NO_OBJ_ID));
 		return result;
 	}
 	
@@ -90,8 +91,8 @@ public abstract class BaseControllerTestImpl extends BaseUserTest implements Bas
 		return result;
 	}
 	
-	protected MvcResult edit() throws Exception {
-		MvcResult result = perform(get(getEditRequestMapping(USER_ID_3)), this.fowardedURL, _200);
+	protected MvcResult edit(long objId) throws Exception {
+		MvcResult result = perform(get(getEditRequestMapping(objId)), this.fowardedURL, _200);
 		assertView(result, getFormResponseMapping());
 		return result;
 	}
@@ -102,9 +103,9 @@ public abstract class BaseControllerTestImpl extends BaseUserTest implements Bas
 		return result;
 	}
 	
-	protected MvcResult save(String attrId, @SuppressWarnings("rawtypes") BaseObject obj) throws Exception {
+	protected MvcResult save(String attrId, @SuppressWarnings("rawtypes") BaseObject obj, long expectedObjId) throws Exception {
 		MvcResult result = perform(post(getSaveRequestMapping()).sessionAttr(attrId, obj), null, _302);
-		assertView(result, getShowResponseMapping(true, USER_ID_4));
+		assertView(result, getShowResponseMapping(true, expectedObjId));
 		return result;
 	}
 	
@@ -114,9 +115,9 @@ public abstract class BaseControllerTestImpl extends BaseUserTest implements Bas
 		return result;
 	}
 
-	protected MvcResult update(String attrId, @SuppressWarnings("rawtypes") BaseObject obj) throws Exception {
+	protected MvcResult update(String attrId, @SuppressWarnings("rawtypes") BaseObject obj, long expectedObjId) throws Exception {
 		MvcResult result = perform(post(getSaveRequestMapping()).sessionAttr(attrId, obj), null, _302);
-		assertView(result, getShowResponseMapping(true, USER_ID_4));
+		assertView(result, getShowResponseMapping(true, expectedObjId));
 		return result;
 	}
 	
@@ -159,7 +160,7 @@ public abstract class BaseControllerTestImpl extends BaseUserTest implements Bas
 			sb.append(REDIRECT_URL);
 		}
 		
-		if (NO_USER_ID == userId) {
+		if (NO_OBJ_ID == userId) {
 			sb.append(requestMapping+REQUEST_SHOW.replaceAll("/#", ""));
 		} else { 
 			sb.append(requestMapping+REQUEST_SHOW.replaceAll(REPLACE_VAR, String.valueOf(userId)));
@@ -180,7 +181,7 @@ public abstract class BaseControllerTestImpl extends BaseUserTest implements Bas
 	 * @param objId
 	 * @return requestMapping
 	 */
-	protected String getEditRequestMapping(int objId) {
+	protected String getEditRequestMapping(long objId) {
 		
 		return requestMapping + REQUEST_EDIT.replaceAll(REPLACE_VAR, String.valueOf(objId));
 	}
@@ -198,7 +199,7 @@ public abstract class BaseControllerTestImpl extends BaseUserTest implements Bas
 	 * @param objId
 	 * @return requestMapping
 	 */
-	protected String getShowRequestMapping(int objId) {
+	protected String getShowRequestMapping(long objId) {
 		String requestShow = REQUEST_SHOW.replaceAll(REPLACE_VAR, String.valueOf(objId));
 		return requestMapping + requestShow;
 	}

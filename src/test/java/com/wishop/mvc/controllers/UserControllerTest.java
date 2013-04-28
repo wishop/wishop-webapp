@@ -3,6 +3,10 @@ package com.wishop.mvc.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,13 +15,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 
+import com.wishop.model.Address;
+import com.wishop.model.AuditInfo;
 import com.wishop.model.User;
 import com.wishop.mvc.WebConstants;
 import com.wishop.service.UserService;
@@ -29,6 +37,7 @@ import com.wishop.utils.WishopMessages;
 		"classpath:/META-INF/springApp/daoContext-app.xml",
 		"classpath:/META-INF/applicationContext.xml",
 		"classpath:test-wishop-servlet.xml"})
+@TransactionConfiguration(defaultRollback = true)
 public class UserControllerTest extends BaseControllerTestImpl implements WebConstants {
 
 	private static final String ATTR_PASSWORD_CONFIRMATION = "passwordConfirmation";
@@ -50,6 +59,17 @@ public class UserControllerTest extends BaseControllerTestImpl implements WebCon
 	private static final String REQUEST_UPDATE_PASSWORD = USER_REQUEST_MAPPING + "/updatePassword";
 	private static final String VIEW_NAME_CHANGE_PASSWORD = "/password_form";
 	
+	private static final String USER_TEST_PASSWORD = "Password123";
+	private static final String TEST_USER_EMAIL_1 = "test.user@mailinator.com";
+	private static final String TEST_USER_EMAIL_2 = "test.user2@mailinator.com";
+	
+	private static final long USER_ID_4 = 4;
+	private static final long USER_ID_3 = 3;
+	private static final long USERS_LIST_SIZE = 3;
+	
+	@Autowired
+	private Md5PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private UserService userService;
 
@@ -70,12 +90,16 @@ public class UserControllerTest extends BaseControllerTestImpl implements WebCon
 		Map<String, Object> model = result.getModelAndView().getModel();
 		Assert.assertNotNull(model);
 		List<User> users = (List<User>) model.get(ATTR_USER_LIST);
-		testGetAll(users, USERS_LIST_SIZE);
+		Assert.assertNotNull(users);
+		Assert.assertEquals(USERS_LIST_SIZE, users.size());
+		for(User user: users) {
+			testAuditInfo(user.getAuditInfo());
+		}
 	}
 
 	@Test
 	public void testShow() throws Exception {
-		MvcResult result = show();
+		MvcResult result = show(USER_ID_3);
 		Map<String, Object> model = result.getModelAndView().getModel();
 		Assert.assertNotNull(model);
 		User user = (User) model.get(ATTR_USER);
@@ -96,7 +120,7 @@ public class UserControllerTest extends BaseControllerTestImpl implements WebCon
 
 	@Test
 	public void testEdit() throws Exception {
-		MvcResult result = edit();
+		MvcResult result = edit(USER_ID_3);
 		Map<String, Object> model = result.getModelAndView().getModel();
 		Assert.assertNotNull(model);
 		User user = (User) model.get(ATTR_USER);
@@ -106,7 +130,8 @@ public class UserControllerTest extends BaseControllerTestImpl implements WebCon
 	@Test
 	public void testPurge() throws Exception {
 		purge(ATTR_USER, userService.getById(3l));
-		super.testPurge(userService.getAll(), USERS_LIST_SIZE-1);
+		Assert.assertNotNull(userService.getAll());
+		Assert.assertEquals(USERS_LIST_SIZE-1, userService.getAll().size());
 	}
 
 	@Test
@@ -115,7 +140,7 @@ public class UserControllerTest extends BaseControllerTestImpl implements WebCon
 		user.setEmailConfirmation(user.getEmail());
 		//user.setPasswordConfirmation(passwordEncoder.encodePassword(USER_TEST_PASSWORD, user.getEmail()));
 		user.setPasswordConfirmation(USER_TEST_PASSWORD);
-		MvcResult result = super.save(ATTR_USER, user);
+		MvcResult result = super.save(ATTR_USER, user, USER_ID_4);
 		Map<String, Object> model = result.getModelAndView().getModel();
 		Assert.assertNotNull(model);
 		user = (User) model.get(ATTR_USER);
@@ -165,7 +190,7 @@ public class UserControllerTest extends BaseControllerTestImpl implements WebCon
 	public void testUpdate() throws Exception {
 		User user = userService.getById(4l);
 		user.setAccountActive(false);
-		super.update(ATTR_USER, user);
+		super.update(ATTR_USER, user, USER_ID_4);
 		user = userService.getById(4l);
 		Assert.assertFalse(user.isAccountActive());
 		testUser(user, TEST_USER_EMAIL_2);
@@ -265,5 +290,77 @@ public class UserControllerTest extends BaseControllerTestImpl implements WebCon
 	 */
 	private String getChangePasswordRequestMapping() {
 		return USER_REQUEST_MAPPING + REQUEST_CHANGE_PASSWORD.replaceAll(REPLACE_VAR, String.valueOf(4));
+	}
+	
+	/**
+	 * Method used to test the user details
+	 * 
+	 * @param user
+	 * @param testUserEmail 
+	 */
+	private void testUser(User user, String testUserEmail) {
+		Assert.assertEquals("Test", user.getFirstName());
+		Assert.assertEquals("User", user.getLastName());
+		Assert.assertEquals(testUserEmail, user.getEmail());
+		testUserAddress(user);
+		testAuditInfo(user.getAuditInfo());
+	}
+	
+	/**
+	 * Tests the User Address
+	 * 
+	 * @param user
+	 */
+	private void testUserAddress(User user) {
+		Assert.assertNotNull(user.getAddress());
+		Assert.assertEquals("Test Address", user.getAddress().getAddressLine1());
+		Assert.assertNull(user.getAddress().getAddressLine2());
+		Assert.assertNull(user.getAddress().getAddressLine3());
+		Assert.assertEquals("SE1", user.getAddress().getPostcode());
+		Assert.assertEquals("London", user.getAddress().getCity());
+		Assert.assertEquals("London", user.getAddress().getCounty());
+		Assert.assertEquals("UK", user.getAddress().getCountry());
+	}
+
+	
+	/**
+	 * Test the AuditInfo data from each BaseObject
+	 * 
+	 * @param auditInfo
+	 */
+	private void testAuditInfo(AuditInfo<Long> auditInfo) {
+		Assert.assertNotNull(auditInfo);
+		Assert.assertEquals(-1l, auditInfo.getCreatorUserId());
+		Assert.assertEquals(-1l, auditInfo.getModifierUserId());
+	}
+	
+	/**
+	 * Creates a new User
+	 * @return User
+	 */
+	private User createUser() {
+		DateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+		User user = new User();
+		try {
+			user.setTitle("Mr");
+			user.setFirstName("Test");
+			user.setLastName("User");
+			Date date = formatter.parse("24/01/2013");
+			user.setDateOfBirth(date);
+			user.setEmail(TEST_USER_EMAIL_2);
+			user.setPassword(USER_TEST_PASSWORD);
+			user.setMobile("12123123123123");
+			user.setProfile("Hello World");
+			Address address1 = new Address();
+			address1.setAddressLine1("Test Address");
+			address1.setCity("London");
+			address1.setCounty("London");
+			address1.setCountry("UK");
+			address1.setPostcode("SE1");
+			user.setAddress(address1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+		}
+		return user;
 	}
 }

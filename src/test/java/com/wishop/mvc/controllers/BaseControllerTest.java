@@ -13,15 +13,6 @@ public interface BaseControllerTest {
 	public void setUp();
 	
 	/**
-	 * Method that test the Tiles Definitions and configuration
-	 */
-//	public void tilesDefinition() throws Exception;
-//
-//	public Object getHandler() throws Exception;
-//	public void setHandler(Object handler);
-	
-	
-	/**
 	 * Testing the custom handler for displaying lists of Wishop BaseObjects.
 	 * @throws Exception
 	 */
