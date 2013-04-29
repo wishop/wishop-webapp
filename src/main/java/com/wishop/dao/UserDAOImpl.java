@@ -51,7 +51,7 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 	
 	public User getByEmail(String email) {
 		String hql = "from User o where o.email = :email";
-		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
+		Query query = getSession().createQuery(hql);
 		query.setString("email", email);
 		return (User) query.uniqueResult();
 	}
@@ -59,14 +59,14 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 	@SuppressWarnings("unchecked")
 	public List<User> getByLastName(String lastName) {
 		String hql = "from User o where o.lastName = :lastname";
-		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
+		Query query = getSession().createQuery(hql);
 		query.setString("lastname", lastName);
 		return query.list();
 	}
 
 	public User getUserByIdAndPassword(Long id, String encryptedPassword) {
 		String hql = "FROM User o WHERE o.id = :id AND o.password = :password";
-		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
+		Query query = getSession().createQuery(hql);
 		query.setLong("id", id);
 		query.setString("password", encryptedPassword);
 		return (User) query.uniqueResult();
@@ -83,7 +83,7 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 		if(user.getId() != null) {
 			hql += " and o.id != :id";
 		}
-		Query query = getSessionFactory().getCurrentSession().createQuery(hql);
+		Query query = getSession().createQuery(hql);
 		query.setParameter("email", user.getEmail());
 		if(user.getId() != null) {
 			query.setParameter("id", user.getId());
