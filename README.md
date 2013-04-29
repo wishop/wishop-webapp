@@ -10,11 +10,18 @@ _This brief document tries to give a simple but effective explanation of how the
  * **target/**: folder where Maven stores all output of the build.
  * **/home/vagrant/.m2**: local folder where maven stores all the dependencies  
  * **Commands**: On the CLI, go to the wishop-webapp folder and type: `mvn clean install`. It will perform jUnit tests if any is created.
+ * **Documentation**:
+  * http://maven.apache.org/guides/
+  * http://maven.apache.org/users/index.html
+  * http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html
 
 
 ### PostgreSQL
  * The wishop DB. _The world's most advanced open source database in the world_
  * **import.sql**: This file will provide a clean way of maintaining the DB in sync by loading seed data into the database using SQL statements
+ * **Documentation**:
+  * http://www.postgresql.org/docs/9.1/static/index.html
+  * http://www.postgresql.org/docs/9.1/static/tutorial.html
 
 
 ### Hibernate
@@ -38,23 +45,31 @@ _This brief document tries to give a simple but effective explanation of how the
  * **src/main/resources/internationalization/**: Folder where all the properties files are located.
  * **applicationContext-app.xml**: Spring file where the beans are declared
  * **WishopMessages**: Class responsible for printing all the messages from the properties files
+ * **Documentation**:
+  * http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/beans.html#context-functionality-messagesource _(**why not use it?**)_
 
 
 ### Log4J
  * The wishop logging package for printing log output
  * **log4j.properties**: File responsible for the log4j configuration. It specifies which Level of logging we want for a package/file/project
+ * **Documentation**:
+  * http://logging.apache.org/log4j/2.x/
+  * http://www.mkyong.com/spring-mvc/spring-mvc-log4j-integration-example/
 
  
 ### EH Cache
  * Ehcache is wishop open source cache framework, for boosting performance, offloading the database, and simplifying scalability. _http://ehcache.org/_
  * **ehcache.xml**: responsible for declaring and managing the cache models
  * **applicationContext-app.xml**: Spring file where the beans are declared
- * **Java Annotations**: An example cache metadata can be found on the BaseService/BaseServiceImpl classes  
+ * **Java Annotations**: An example cache metadata can be found on the BaseService/BaseServiceImpl classes
+ * **Documentation**:
+  * http://ehcache.org/documentation
+  * http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/cache.html#cache-store-configuration-ehcache
  
  
 ### AspectsJ (AOP)
  * AspectJ is an aspect-oriented extension. Allowing wishop to manage mundane tasks, that should be done but the programmer should not need to repeat it throughout the code.
- * **AuditLog.java**: Class responsible for using the AspectsJ. It simply adds the AuditInfo (creation timestamp, creation user id, modification timestamp, modification user id) to all BaseObject classes and creates new entry on the AuditLogRecord. This will provide information about the who/when information against a business object.
+ * `com.wishop.service.aspects` is the package where all AspectJ advices are defined. Adds the AuditInfo (creation timestamp, creation user id, modification timestamp, modification user id) to all BaseObject classes and creates new entry on the AuditLogRecord. This will provide information about the who/when information against a business object.
  * **Documentation:**
   *  http://static.springsource.org/spring/docs/3.2.x/spring-framework-reference/html/aop.html
 
