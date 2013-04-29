@@ -3,10 +3,13 @@ package com.wishop.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.TreeSet;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -51,6 +54,9 @@ public class User extends BaseObject<User, Long> {
 	
 	@Embedded
 	private Address address;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Collection<Role> roles = new TreeSet<Role>();
 	
 	@OneToMany
 	private Collection<Wishlist> listOfWishlists = new ArrayList<Wishlist>();
