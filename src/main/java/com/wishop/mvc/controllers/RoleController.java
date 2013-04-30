@@ -15,14 +15,14 @@ import com.wishop.service.BaseService;
  *
  */
 @Controller
-@RequestMapping("/workbench/roles")
+@RequestMapping("/workbench/role")
 @SessionAttributes("role")
 public class RoleController extends BaseControllerImpl<Role, Long> {
 
 	
 	/**
-	 * Injects the <b>IRoleService RoleService</b> through Spring DI
-	 * @param RoleService - IRoleService
+	 * Injects the <b>RoleService RoleService</b> through Spring DI
+	 * @param RoleService - RoleService
 	 */
 	@Autowired
 	public RoleController(BaseService<?, BaseObject<?, Long>> roleService, BaseValidator<Role,Long> roleValidator) {

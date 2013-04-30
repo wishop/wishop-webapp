@@ -8,11 +8,13 @@ package com.wishop.mvc;
  *
  */
 public interface WebConstants {
-	public static final String PARAM_CMS_USER = "user";
-	public static final String PARAM_CMS_USERS = "users";
+	public static final String WEB_USER = "user";
+	public static final String WEB_USERS = "users";
+	
+	public static final String WEB_ROLE = "role";
+	public static final String WEB_ROLES = "roles";
 	
 	//Wishop FORM CONSTANTS
-	public static final String PARAM_ERRORS = "errors";
 	public static final String PARAM_NAME = "name";
 	public static final String FIELD_REQUIRED = "required";
 	public static final String FIELD_INVALID = "invalid";

@@ -1,15 +1,20 @@
 package com.wishop.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.wishop.model.Role;
 import com.wishop.model.User;
 
 /**
@@ -22,6 +27,9 @@ import com.wishop.model.User;
 @Component("userDAO")
 public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 	
+	protected static final String USER_LASTNAME = "lastName";
+	protected static final String USER_EMAIL = "email";
+
 	@Autowired
 	public UserDAOImpl(SessionFactory sessionFactory) {
 		super(sessionFactory);
@@ -50,17 +58,16 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 	}
 	
 	public User getByEmail(String email) {
-		String hql = "from User o where o.email = :email";
-		Query query = getSession().createQuery(hql);
-		query.setString("email", email);
+		Criteria query = getSession().createCriteria(getPersistentClass());
+		query.add(Restrictions.eq(USER_EMAIL, email));
 		return (User) query.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<User> getByLastName(String lastName) {
-		String hql = "from User o where o.lastName = :lastname";
-		Query query = getSession().createQuery(hql);
-		query.setString("lastname", lastName);
+		Criteria query = getSession().createCriteria(getPersistentClass());
+		query.add(Restrictions.eq(USER_LASTNAME, lastName));
+		query.addOrder(Order.asc(OBJECT_ID));
 		return query.list();
 	}
 
@@ -71,7 +78,7 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 		query.setString("password", encryptedPassword);
 		return (User) query.uniqueResult();
 	}
-	//TODO - Update the audit-info with this call.
+
 	public void setAccountActive(User user, boolean isAccountActive) {
 		user.setAccountActive(isAccountActive);
 		super.update(user);
@@ -84,7 +91,7 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 			hql += " and o.id != :id";
 		}
 		Query query = getSession().createQuery(hql);
-		query.setParameter("email", user.getEmail());
+		query.setParameter(USER_EMAIL, user.getEmail());
 		if(user.getId() != null) {
 			query.setParameter("id", user.getId());
 		}
@@ -93,5 +100,17 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
 			return false;
 		}
 		return true;
+	}
+	
+
+	public List<User> getByRole(Role role) {
+		List<User> filteredUsers = new ArrayList<User>();
+		List<User> users = getAll();
+		for(User user : users) {
+			if(user.getRoles()!= null && user.getRoles().size() > 0 && user.getRoles().contains(role)) {
+				filteredUsers.add(user);
+			}
+		}
+		return filteredUsers;
 	}
 }

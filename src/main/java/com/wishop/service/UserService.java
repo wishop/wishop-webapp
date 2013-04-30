@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wishop.dao.UserDAO;
+import com.wishop.model.Role;
 import com.wishop.model.User;
 
 /**
@@ -55,4 +56,11 @@ public interface UserService extends BaseService<UserDAO, User>
 	 * @return boolean true/false
 	 */
 	public boolean isUniqueEmail(User user);
+	
+	/**
+	 * Get Users by Role
+	 * @param role
+	 * @return List - list of Users
+	 */
+	public List<User> getByRole(Role role);
 }

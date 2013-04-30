@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.wishop.model.Role;
 import com.wishop.model.User;
 
 @Repository
@@ -43,4 +44,11 @@ public interface UserDAO extends BaseDAO<User, Long>{
 	 * @return boolean true/false
 	 */
 	public boolean isUniqueEmail(User user);
+	
+	/**
+	 * Get Users by Role
+	 * @param role
+	 * @return List - list of CmsUser objects
+	 */
+	public List<User> getByRole(Role role); 
 }

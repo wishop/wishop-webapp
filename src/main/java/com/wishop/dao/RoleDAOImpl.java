@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,11 @@ import com.wishop.model.Role;
 @Component("roleDAO")
 public class RoleDAOImpl extends BaseDAOImpl<Role, Long> implements RoleDAO {
 
+	@Autowired
+	public RoleDAOImpl(SessionFactory sessionFactory) {
+		super(sessionFactory);
+	}
+	
 	/**
 	 * Get user by id. <br>
 	 * Will check if the <b>id</b> String is not empty and if is numeric.

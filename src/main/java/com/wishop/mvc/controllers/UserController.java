@@ -11,33 +11,40 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 
 import com.wishop.model.BaseObject;
+import com.wishop.model.Role;
 import com.wishop.model.User;
 import com.wishop.model.exceptions.WishopException;
 import com.wishop.mvc.validators.BaseValidator;
 import com.wishop.mvc.validators.UserValidator;
 import com.wishop.service.BaseService;
+import com.wishop.service.RoleService;
 import com.wishop.service.UserService;
 import com.wishop.utils.WishopSecurityContext;
 
 /**
- * JavaBean User controller that is used to respond to <code>User</code> requests.
+ * JavaBean User controller that is used to respond to <code>User</code> requests. <b>
  * @author Paulo Monteiro
  *
  */
 @Controller 
 @RequestMapping("/workbench/user")
-@SessionAttributes(value = {"user"})
+@SessionAttributes(value = {"user", "roles"})
 public class UserController extends BaseControllerImpl<User, Long>  {
 
 	private static final String PASSWORD_FORM = "/password_form";
+	private static final String ROLES_FORM = "/roles_form";
 
 	public static final String FORM_STATUS_UPDATE = "UPDATE";
 	public static final String FORM_STATUS_SUBMIT = "SUBMIT";
+	
+	@Autowired
+	private RoleService roleService;
 	
 	@Autowired
 	private Md5PasswordEncoder passwordEncoder;
@@ -159,5 +166,47 @@ public class UserController extends BaseControllerImpl<User, Long>  {
 			status.setComplete();
 			return REDIRECT + WORKBENCH + getEntityShortName() + SHOW + user.getId();
 		}
-	}	
+	}
+	
+	/**
+	 * Remove a user role. 
+	 * @param user - User
+	 * @return View name, to redirect the user to
+	 * @throws WishopException 
+	 */
+	@RequestMapping(method=RequestMethod.POST)
+    public String removeRole(User user, @RequestParam("roleId") int roleId) throws WishopException {
+		Role role = roleService.getById(roleId);
+		user.getRoles().remove(role);
+		((UserService)getBaseService()).update(user);
+        return  REDIRECT + WORKBENCH + getEntityShortName() + SHOW + user.getId();
+    }
+	
+	/**
+	 * Method responsible for adding a <b>role</b> to a User. 
+	 * @param model
+	 * @return view name for the model
+	 */
+	@RequestMapping(value="/{userId}/roles", method = RequestMethod.GET)
+	public String addRoles(@PathVariable("userId") int userId, Model model) {
+		User user = ((UserService)getBaseService()).getById(userId);
+		model.addAttribute(getEntityShortName(), user);
+		model.addAttribute(WEB_ROLES, roleService.getAll());
+		return WORKBENCH + getEntityShortName() + ROLES_FORM;
+	}
+	
+	/**
+	 * Method that validates the form for a new object, previously submitted by the user
+	 * @param user - the User object
+	 * @param result - BindingResult
+	 * @param status - SessionStatus
+	 * @return view to display the object
+	 * @throws WishopException 
+	 */
+	@RequestMapping(value="/{userId}/saveRoles", method = RequestMethod.POST)
+	public String saveRoles(@ModelAttribute User user, BindingResult result, SessionStatus status) throws WishopException {
+		((UserService)getBaseService()).update(user);
+		status.setComplete();
+		return REDIRECT + WORKBENCH + getEntityShortName() + SHOW + user.getId();
+	}
 }
