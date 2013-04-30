@@ -3,6 +3,7 @@ package com.wishop.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import javax.persistence.Column;
@@ -300,5 +301,34 @@ public class User extends BaseObject<User, Long> {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
+	}
+
+	/**
+	 * @return the roles
+	 */
+	public Collection<Role> getRoles() {
+		return roles;
+	}
+	
+	/**
+	 * Checks to see if the user is an Administrator.
+	 * @return true if is administrator, false otherwise
+	 */
+	public boolean isAdministrator() {
+		Iterator<Role> rolesIt = getRoles().iterator();
+		while(rolesIt.hasNext()) {
+			Role role = rolesIt.next();
+			if(Role.ROLE_ADMINISTRATOR.equals(role.getName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
